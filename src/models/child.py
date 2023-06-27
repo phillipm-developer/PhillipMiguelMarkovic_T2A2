@@ -11,9 +11,7 @@ class Child(db.Model):
     medical_info_id = db.Column(db.Integer)
     emergency_contact_id = db.Column(db.Integer)
 
-    # is_admin = db.Column(db.Boolean, default=False)
-
-class UserSchema(ma.Schema):
+class ChildSchema(ma.Schema):
     class Meta:
-        fields = ('first_name', 'last_name', 'date_of_birth', 'gender', 'medical_info_id', 'emergency_contact_id')
+        fields = ('id', 'first_name', 'last_name', 'date_of_birth', 'gender', 'medical_info_id', 'emergency_contact_id')
 

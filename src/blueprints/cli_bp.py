@@ -4,7 +4,10 @@ from models.user import User
 from models.role import Role
 from models.guardian import Guardian
 from models.child import Child
-from models.relationships import Relationship
+from models.relationship import Relationship
+from models.guardian_child import GuardianChild
+from models.authorized_pickup import AuthorizedPickup
+
 from init import db, bcrypt
 
 cli_bp = Blueprint('db', __name__)
@@ -132,6 +135,42 @@ def seed_db():
         )
     ]
 
+    guardians_children = [
+        GuardianChild(
+            guardian_id = 1,
+            child_id = 1,
+            relationship_id = 1
+        ),
+        GuardianChild(
+            guardian_id = 2,
+            child_id = 1,
+            relationship_id = 2
+        ),
+        GuardianChild(
+            guardian_id = 1,
+            child_id = 2,
+            relationship_id = 1
+        ),
+        GuardianChild(
+            guardian_id = 2,
+            child_id = 2,
+            relationship_id = 2
+        )
+    ]
+
+    authorized_pickups = [
+        AuthorizedPickup(
+            child_id = 1,
+            first_name = 'Mark',
+            last_name = 'Davies',
+            relationship_id = 3
+        )
+    ]
+
+    # Truncate the authorizded pickups table
+    db.session.query(AuthorizedPickup).delete()
+    # Truncate the guardians_children table
+    db.session.query(GuardianChild).delete()
     # Truncate the Children table
     db.session.query(Child).delete()
     # Truncate the User table
@@ -150,6 +189,8 @@ def seed_db():
     db.session.add_all(roles)
     db.session.add_all(relationships)
     db.session.add_all(children)
+    db.session.add_all(guardians_children)
+    db.session.add_all(authorized_pickups)
 
     # Commit the tranaction to the database
     db.session.commit()

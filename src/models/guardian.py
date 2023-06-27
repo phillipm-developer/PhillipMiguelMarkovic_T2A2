@@ -9,6 +9,6 @@ class Guardian(db.Model):
     medical_info_consent = db.Column(db.Boolean, default=False)
     authorized_to_pickup = db.Column(db.Boolean, default=False)
 
-class CardSchema(ma.Schema):
+class GuardianSchema(ma.Schema):
     class Meta:
         fields = ('id', 'user_id', 'occupation', 'medical_info_consent', 'authorized_to_pickup')
