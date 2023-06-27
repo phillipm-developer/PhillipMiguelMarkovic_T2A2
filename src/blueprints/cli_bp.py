@@ -1,5 +1,5 @@
 from flask import Blueprint
-from datetime import date
+from datetime import date, datetime
 from models.user import User
 from models.role import Role
 from models.guardian import Guardian
@@ -7,6 +7,9 @@ from models.child import Child
 from models.relationship import Relationship
 from models.guardian_child import GuardianChild
 from models.authorized_pickup import AuthorizedPickup
+from models.attendance import Attendance
+from models.attendance_status import AttendanceStatus
+from models.emergency_contact import EmergencyContact
 
 from init import db, bcrypt
 
@@ -167,7 +170,7 @@ def seed_db():
         )
     ]
 
-    # Truncate the authorizded pickups table
+    # Truncate the authorized pickups table
     db.session.query(AuthorizedPickup).delete()
     # Truncate the guardians_children table
     db.session.query(GuardianChild).delete()
@@ -182,6 +185,8 @@ def seed_db():
     # Truncate the relationships table
     db.session.query(Relationship).delete()
 
+    db.session.query(AttendanceStatus).delete()
+
     # Add the card to the session (transaction)
     # db.session.add(card)
     db.session.add_all(guardians)
@@ -191,6 +196,60 @@ def seed_db():
     db.session.add_all(children)
     db.session.add_all(guardians_children)
     db.session.add_all(authorized_pickups)
+
+    attendance_statuses = [
+        AttendanceStatus(
+            status_name = 'Awaiting Arrival',
+            status_desc = 'Awaiting arrival of the child'
+        ),
+        AttendanceStatus(
+            status_name = 'Absent',
+            status_desc = 'Did not arrive within designated timeframe'
+        ),
+        AttendanceStatus(
+            status_name = 'Picked Up',
+            status_desc = 'Picked up by guardian or authorized pickup'
+        )
+    ]
+
+    attendances = [
+        Attendance(
+            child_id = 1,
+            date = date.today(),
+            arrival_time = datetime.now().strftime("%H:%M:%S"),
+            departure_time = datetime.now().strftime("%H:%M:%S"),
+            status_id = 1
+        ),
+        Attendance(
+            child_id = 2,
+            date = date.today(),
+            arrival_time = datetime.now().strftime("%H:%M:%S"),
+            departure_time = datetime.now().strftime("%H:%M:%S"),
+            status_id = 1
+        )
+    ]
+
+
+    emergency_contacts = [
+        EmergencyContact(
+            first_name = 'Mark',
+            last_name = 'Davies',
+            relationship_id = 3,
+            phone_number = '0400 516 999',
+            notes = 'Uncle of the child'
+        )
+    ]
+
+    # Truncate the attendances pickups table
+    db.session.query(Attendance).delete()
+    # Truncate the attendance_statuses table
+    db.session.query(AttendanceStatus).delete()
+    # Truncate the emergency contacts table
+    db.session.query(EmergencyContact).delete()
+
+    db.session.add_all(attendance_statuses)
+    db.session.add_all(attendances)
+    db.session.add_all(emergency_contacts)
 
     # Commit the tranaction to the database
     db.session.commit()
