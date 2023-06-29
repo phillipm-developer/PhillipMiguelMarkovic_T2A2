@@ -5,31 +5,31 @@ from init import db, bcrypt
 from sqlalchemy.exc import IntegrityError
 from flask_jwt_extended import create_access_token, get_jwt_identity
 
-auth_bp = Blueprint('auth', __name__)
+auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-@auth_bp.route('/register', methods=['POST'])
-def register():
-    try:
-        # Parse, sanitize and validate the incoming JSON data 
-        # via the schema
-        user_info = UserSchema().load(request.json)
-        # Create a new User model instance with the schema data
-        user = User(
-            email = user_info['email'],
-            password = bcrypt.generate_password_hash(user_info['password']).decode('utf-8'),
-            name = user_info['name']
-        )
+# @auth_bp.route('/register', methods=['POST'])
+# def register():
+#     try:
+#         # Parse, sanitize and validate the incoming JSON data 
+#         # via the schema
+#         user_info = UserSchema().load(request.json)
+#         # Create a new User model instance with the schema data
+#         user = User(
+#             email = user_info['email'],
+#             password = bcrypt.generate_password_hash(user_info['password']).decode('utf-8'),
+#             name = user_info['name']
+#         )
 
-        # print(user.__dict__)
-        # Add and commit the new user
-        db.session.add(user)
-        db.session.commit()
+#         # print(user.__dict__)
+#         # Add and commit the new user
+#         db.session.add(user)
+#         db.session.commit()
 
-        # Return the new user excluding the password
-        return UserSchema(exclude=['password']).dump(user), 201
-    except IntegrityError:
-        return {'error': 'Email address already in use'}, 409
-
+#         # Return the new user excluding the password
+#         return UserSchema(exclude=['password']).dump(user), 201
+#     except IntegrityError:
+#         return {'error': 'Email address already in use'}, 409
+ 
 
 @auth_bp.route('/login', methods=['POST'])
 def login():

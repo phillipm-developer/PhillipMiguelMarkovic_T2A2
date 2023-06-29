@@ -4,12 +4,13 @@ from models.user import User, UserSchema
 from models.child import Child, ChildSchema
 from init import db, bcrypt
 from sqlalchemy.exc import IntegrityError
-from flask_jwt_extended import create_access_token, get_jwt_identity
+from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 
 child_bp = Blueprint('children', __name__, url_prefix='/children')
 
 # Returns all children on record - Includes their embedded User information
 @child_bp.route('/', methods=['GET'])
+@jwt_required()
 def all_children():
     # select * from children;
     stmt = db.select(Child).order_by(Child.id.asc())
@@ -18,6 +19,7 @@ def all_children():
 
 # Returns the child information for the child id supplied as a RESTful parameter
 @child_bp.route('/<int:child_id>', methods=['GET'])
+@jwt_required()
 def one_child(child_id):
     stmt = db.select(Child).filter_by(id=child_id)
     child = db.session.scalar(stmt)
@@ -29,6 +31,7 @@ def one_child(child_id):
 
 # Create - CRUD route for creating a new child in the database. 
 @child_bp.route('/', methods=['POST'])
+@jwt_required()
 def create_child():
     try:
         # Parse, sanitize and validate the incoming JSON data 
@@ -59,6 +62,7 @@ def create_child():
 
 # Update a card
 @child_bp.route('/<int:child_id>', methods=['PUT', 'PATCH'])
+@jwt_required()
 def update_child(child_id):
     stmt = db.select(Child).filter_by(id=child_id)
     child = db.session.scalar(stmt)
@@ -79,6 +83,7 @@ def update_child(child_id):
 
 # Delete a child
 @child_bp.route('/<int:child_id>', methods=['DELETE'])
+@jwt_required()
 def delete_child(child_id):
     stmt = db.select(Child).filter_by(id=child_id)
     child = db.session.scalar(stmt)

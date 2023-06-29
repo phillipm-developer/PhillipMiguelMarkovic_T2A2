@@ -120,7 +120,7 @@ def seed_db():
             phone_number = '0400 236 777',
             date_of_birth = '1984-11-19',
             gender = 'female',
-            role_id = 2
+            role_id = 1
         )
     ]
 
@@ -164,6 +164,12 @@ def seed_db():
             first_name = "Cloe",
             last_name = "Punch",
             date_of_birth = "2019-03-12",
+            gender = "female"
+        ),
+        Child(
+            first_name = "Maisie",
+            last_name = "Jones",
+            date_of_birth = "2019-10-16",
             gender = "female"
         )
     ]

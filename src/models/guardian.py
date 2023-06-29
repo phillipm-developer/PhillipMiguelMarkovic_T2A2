@@ -21,4 +21,5 @@ class GuardianSchema(ma.Schema):
     guardian_child = fields.List(fields.Nested('GuardianChildSchema'))
 
     class Meta:
-        fields = ('id', 'occupation', 'medical_info_consent', 'authorized_to_pickup', 'user', 'guardian_child')
+        # fields = ('id', 'occupation', 'medical_info_consent', 'authorized_to_pickup', 'user', 'guardian_child')
+        fields = ('id', 'occupation', 'medical_info_consent', 'authorized_to_pickup', 'user')

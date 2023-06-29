@@ -83,6 +83,34 @@ Overall, an ORM simplifies database interactions, improves code organization, en
 
 The childcare administrator must register a legal guardian first before they can register the children for that guardian.
 
+Request Body
+
+    { 
+        "email": "jenna@spam.com",
+        "password": "password123"
+    }
+
+Response Body
+
+    {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4ODAxMzU3MywianRpIjoiZmMyYWM3NjEtOWE2NC00OGRmLTgxODQtZGFmZGRkYzU2NTM4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Implbm5hQHNwYW0uY29tIiwibmJmIjoxNjg4MDEzNTczLCJleHAiOjE2ODgwOTk5NzN9.rxQEo_LrFxmDooWHL--MaRmSbJDiRF9yKX_6LGgp7zE",
+        "user": {
+            "date_of_birth": "1969-02-14",
+            "email": "jenna@spam.com",
+            "first_name": "Jenna",
+            "gender": "female",
+            "id": 4,
+            "last_name": "Walters",
+            "phone_number": "0401548899",
+            "role": {
+                "id": 3,
+                "role_desc": "The childcare center administrator",
+                "role_name": "administrator"
+            }
+        }
+    }
+
+
 - POST /guardians: Insert a new parent/guardian record.
 
 Request Body
@@ -145,7 +173,11 @@ Response Body
                 "id": 1,
                 "last_name": "Davies",
                 "phone_number": "98885656",
-                "role_id": 1
+                "role": {
+                    "id": 1,
+                    "role_desc": "The parent or legal guardian of the child",
+                    "role_name": "guardian"
+                }
             }
         },
         {
@@ -161,7 +193,31 @@ Response Body
                 "id": 2,
                 "last_name": "Davies",
                 "phone_number": "98885656",
-                "role_id": 1
+                "role": {
+                    "id": 1,
+                    "role_desc": "The parent or legal guardian of the child",
+                    "role_name": "guardian"
+                }
+            }
+        },
+        {
+            "authorized_to_pickup": true,
+            "id": 3,
+            "medical_info_consent": true,
+            "occupation": "Project Manager",
+            "user": {
+                "date_of_birth": "1984-11-19",
+                "email": "amy.baron@gmail.com",
+                "first_name": "Amy",
+                "gender": "female",
+                "id": 5,
+                "last_name": "Baron",
+                "phone_number": "0400 236 777",
+                "role": {
+                    "id": 1,
+                    "role_desc": "The parent or legal guardian of the child",
+                    "role_name": "guardian"
+                }
             }
         }
     ]
@@ -329,6 +385,7 @@ Response Body
 
 - DELETE /children/<int: child_id>: Delete a child record.
 
+
 Request URI
 
 http://localhost:5000/children/3
@@ -338,6 +395,151 @@ Response Body
     {
         "message": "The records for child #3 have been deleted."
     }
+
+GET /guardians_children: Returns the relationship that exists between guardians and their children
+
+Request URI
+
+http://localhost:5000/guardians_children
+
+Response Body
+
+    [
+        {
+            "child": {
+                "date_of_birth": "2020-07-11",
+                "first_name": "Anthony",
+                "gender": "male",
+                "id": 1,
+                "last_name": "Punch"
+            },
+            "guardian": {
+                "authorized_to_pickup": true,
+                "id": 1,
+                "medical_info_consent": true,
+                "occupation": "Delivery Driver"
+            },
+            "id": 1
+        },
+        {
+            "child": {
+                "date_of_birth": "2020-07-11",
+                "first_name": "Anthony",
+                "gender": "male",
+                "id": 1,
+                "last_name": "Punch"
+            },
+            "guardian": {
+                "authorized_to_pickup": true,
+                "id": 2,
+                "medical_info_consent": true,
+                "occupation": "Software Engineer"
+            },
+            "id": 2
+        }
+    ]
+
+GET /guardians_children/2: Returns one relationship that exists between a guardian and their child
+
+Request URI
+
+http://localhost:5000/guardians_children/2
+
+Response Body
+
+    {
+        "child": {
+            "date_of_birth": "2020-07-11",
+            "first_name": "Anthony",
+            "gender": "male",
+            "id": 1,
+            "last_name": "Punch"
+        },
+        "guardian": {
+            "authorized_to_pickup": true,
+            "id": 2,
+            "medical_info_consent": true,
+            "occupation": "Software Engineer"
+        },
+        "id": 2
+    }
+
+POST /guardians_children
+
+Request Body
+
+{
+	"guardian_id": 1,
+	"child_id": 3, 
+	"relationship_id": 1
+}
+
+Response Body
+
+    {
+        "child": {
+            "date_of_birth": "2019-10-16",
+            "first_name": "Maisie",
+            "gender": "female",
+            "id": 3,
+            "last_name": "Jones"
+        },
+        "child_id": 3,
+        "guardian": {
+            "authorized_to_pickup": true,
+            "id": 1,
+            "medical_info_consent": true,
+            "occupation": "Delivery Driver"
+        },
+        "guardian_id": 1,
+        "id": 5,
+        "relationship_id": 1
+    }
+
+PUT/PATCH /guardians_children/<int: guardians_children_id>: Update a single guardian-child relationship.
+
+Request Body
+
+    {
+        "guardian_id": 1,
+        "child_id": 3, 
+        "relationship_id": 2
+    }
+
+Response Body
+
+    {
+        "child": {
+            "date_of_birth": "2019-10-16",
+            "first_name": "Maisie",
+            "gender": "female",
+            "id": 3,
+            "last_name": "Jones"
+        },
+        "child_id": 3,
+        "guardian": {
+            "authorized_to_pickup": true,
+            "id": 1,
+            "medical_info_consent": true,
+            "occupation": "Delivery Driver"
+        },
+        "guardian_id": 1,
+        "id": 5,
+        "relationship_id": 2
+    }
+
+DELETE /guardians_children/<int: guardians_children_id> : Delete a single guardian-child relationship.
+
+Request URI
+
+http://localhost:5000/guardians_children/5
+
+Response Body
+
+    {
+        "message": "The records for guardian-child relationship #5 have been deleted."
+    }
+
 
 - POST /authorized-pickups: Insert a new authorized pickup record.
 - GET /authorized-pickups/<int: pickup_id>: Retrieve information about a specific authorized pickup.

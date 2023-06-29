@@ -4,12 +4,13 @@ from models.user import User, UserSchema
 from models.guardian import Guardian, GuardianSchema
 from init import db, bcrypt
 from sqlalchemy.exc import IntegrityError
-from flask_jwt_extended import create_access_token, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 guardian_bp = Blueprint('guardians', __name__, url_prefix='/guardians')
 
 # Returns all guardians on record - Includes their embedded User information
 @guardian_bp.route('/', methods=['GET'])
+@jwt_required()
 def all_guardians():
     # select * from guardians;
     stmt = db.select(Guardian).order_by(Guardian.id.asc())
@@ -18,6 +19,7 @@ def all_guardians():
 
 # Returns the guardian information for the guardian id supplied as a RESTful parameter
 @guardian_bp.route('/<int:guardian_id>', methods=['GET'])
+@jwt_required()
 def one_guardian(guardian_id):
     stmt = db.select(Guardian).filter_by(id=guardian_id)
     guardian = db.session.scalar(stmt)
@@ -29,6 +31,7 @@ def one_guardian(guardian_id):
 
 # Create - CRUD route for creating a new guardian in the database. 
 @guardian_bp.route('/', methods=['POST'])
+@jwt_required()
 def create_guardian():
     try:
         # Parse, sanitize and validate the incoming JSON data 
@@ -74,6 +77,7 @@ def create_guardian():
 
 # Update a card
 @guardian_bp.route('/<int:guardian_id>', methods=['PUT', 'PATCH'])
+@jwt_required()
 def update_guardian(guardian_id):
     stmt = db.select(Guardian).filter_by(id=guardian_id)
     guardian = db.session.scalar(stmt)
@@ -93,6 +97,7 @@ def update_guardian(guardian_id):
 
 # Delete a guardian
 @guardian_bp.route('/<int:guardian_id>', methods=['DELETE'])
+@jwt_required()
 def delete_guardian(guardian_id):
     stmt = db.select(Guardian).filter_by(id=guardian_id)
     guardian = db.session.scalar(stmt)
