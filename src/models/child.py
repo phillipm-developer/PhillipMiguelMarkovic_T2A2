@@ -12,12 +12,12 @@ class Child(db.Model):
     medical_info_id = db.Column(db.Integer)
     emergency_contact_id = db.Column(db.Integer)
 
-    # guardian_child = db.relationship('GuardianChild', back_populates='child')
+    guardian_child = db.relationship('GuardianChild', back_populates='child')
 
 class ChildSchema(ma.Schema):
-    # guardian_child = fields.List(fields.Nested('GuardianChildSchema'))
+    guardian_child = fields.List(fields.Nested('GuardianChildSchema'))
 
     class Meta:
-        # fields = ('id', 'first_name', 'last_name', 'date_of_birth', 'gender', 'medical_info_id', 'emergency_contact_id', 'guardian_child')
-        fields = ('id', 'first_name', 'last_name', 'date_of_birth', 'gender', 'medical_info_id', 'emergency_contact_id')
+        fields = ('id', 'first_name', 'last_name', 'date_of_birth', 'gender', 'medical_info_id', 'emergency_contact_id', 'guardian_child')
+        # fields = ('id', 'first_name', 'last_name', 'date_of_birth', 'gender', 'medical_info_id', 'emergency_contact_id')
 
