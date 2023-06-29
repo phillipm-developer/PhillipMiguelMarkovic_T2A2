@@ -3,6 +3,8 @@ from os import environ
 from init import db, ma, bcrypt, jwt
 from blueprints.cli_bp import cli_bp
 from blueprints.auth_bp import auth_bp
+from blueprints.guardian_bp import guardian_bp
+from blueprints.child_bp import child_bp
 
 def setup():
     app = Flask(__name__)
@@ -21,5 +23,7 @@ def setup():
 
     app.register_blueprint(cli_bp)
     app.register_blueprint(auth_bp)
+    app.register_blueprint(guardian_bp)
+    app.register_blueprint(child_bp)
 
     return app

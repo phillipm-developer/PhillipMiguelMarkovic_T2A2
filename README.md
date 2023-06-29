@@ -78,33 +78,282 @@ Overall, an ORM simplifies database interactions, improves code organization, en
 
 ## Enrollment and Registration:
 
-- POST /auth/register: Admin commences formal registration process for children and their guardians
-- POST /auth/guardian-login: 
+
+- POST /auth/login
+
+The childcare administrator must register a legal guardian first before they can register the children for that guardian.
+
+- POST /guardians: Insert a new parent/guardian record.
+
+Request Body
+
+    {
+        "authorized_to_pickup": true,
+        "medical_info_consent": true,
+        "occupation": "Delivery Driver",
+        "user": {
+            "date_of_birth": "1984-10-12",
+            "email": "joseph.parker@tpg.com.au",
+            "password": "password123",
+            "first_name": "Joseph",
+            "gender": "male",
+            "last_name": "Parker",
+            "phone_number": "0400 181 797",
+            "role_id": 1
+        }
+    }
+
+Response Body
+
+    {
+        "authorized_to_pickup": true,
+        "id": 3,
+        "medical_info_consent": true,
+        "occupation": "Delivery Driver",
+        "user": {
+            "date_of_birth": "1984-10-12",
+            "email": "joseph.parker@tpg.com.au",
+            "first_name": "Joseph",
+            "gender": "male",
+            "id": 5,
+            "last_name": "Parker",
+            "phone_number": "0400 181 797",
+            "role_id": 1
+        }
+    }
+
+Request URI
+
+http://localhost:5000/guardians
+
+
+GET /guardians: Retrieve all guardians.
+
+Response Body
+
+    [
+        {
+            "authorized_to_pickup": true,
+            "id": 1,
+            "medical_info_consent": true,
+            "occupation": "Delivery Driver",
+            "user": {
+                "date_of_birth": "1974-09-23",
+                "email": "spam@spam.com",
+                "first_name": "John",
+                "gender": "male",
+                "id": 1,
+                "last_name": "Davies",
+                "phone_number": "98885656",
+                "role_id": 1
+            }
+        },
+        {
+            "authorized_to_pickup": true,
+            "id": 2,
+            "medical_info_consent": true,
+            "occupation": "Software Engineer",
+            "user": {
+                "date_of_birth": "1976-04-03",
+                "email": "tomato@spam.com",
+                "first_name": "Joan",
+                "gender": "female",
+                "id": 2,
+                "last_name": "Davies",
+                "phone_number": "98885656",
+                "role_id": 1
+            }
+        }
+    ]
+
+- GET /guardians/<int: guardian_id>: Retrieve information about a specific guardian.
+
+Request URI
+
+http://localhost:5000/guardians/2
+
+Response Body
+
+    {
+        "authorized_to_pickup": true,
+        "id": 2,
+        "medical_info_consent": true,
+        "occupation": "Software Engineer",
+        "user": {
+            "date_of_birth": "1976-04-03",
+            "email": "tomato@spam.com",
+            "first_name": "Joan",
+            "gender": "female",
+            "id": 2,
+            "last_name": "Davies",
+            "phone_number": "98885656",
+            "role_id": 1
+        }
+    }
+
+- PUT/PATCH /guardians/<int: guardian_id>: Update the details of a parent/guardian.
+
+Request body
+
+    {
+        "authorized_to_pickup": false,
+        "medical_info_consent": true,
+        "occupation": "Plumber"
+    }
+
+Response Body
+
+    {
+        "authorized_to_pickup": false,
+        "id": 1,
+        "medical_info_consent": true,
+        "occupation": "Plumber",
+        "user": {
+            "date_of_birth": "1974-09-23",
+            "email": "spam@spam.com",
+            "first_name": "John",
+            "gender": "male",
+            "id": 1,
+            "last_name": "Davies",
+            "phone_number": "98885656",
+            "role_id": 1
+        }
+    }
+
+- DELETE /guardians/<int: guardian_id>: Delete a parent/guardian record.
+
+Request URI
+
+http://localhost:5000/guardians/3
+
+Response Body
+
+    {
+        "message": "The records for guardian #3 have been deleted."
+    }
+
+A legal guardian can login and view information pertaining to their children.
 
 - POST /children: Insert a new child record.
+
+Request Body
+
+    {
+        "date_of_birth": "2020-07-11",
+        "first_name": "Michael",
+        "gender": "male",
+        "last_name": "Mosely"
+    }
+
+Response Body
+
+    {
+        "date_of_birth": "2020-07-11",
+        "emergency_contact_id": null,
+        "first_name": "Michael",
+        "gender": "male",
+        "id": 5,
+        "last_name": "Mosely",
+        "medical_info_id": null
+    }
+
+- GET /children: Return all children
+
+Request URI
+
+http://localhost:5000/children
+
+Response Body
+
+    [
+        {
+            "date_of_birth": "2020-07-11",
+            "emergency_contact_id": null,
+            "first_name": "Anthony",
+            "gender": "male",
+            "id": 1,
+            "last_name": "Punch",
+            "medical_info_id": null
+        },
+        {
+            "date_of_birth": "2019-03-12",
+            "emergency_contact_id": null,
+            "first_name": "Cloe",
+            "gender": "female",
+            "id": 2,
+            "last_name": "Punch",
+            "medical_info_id": null
+        }
+    ]
+
 - GET /children/<int: child_id>: Retrieve information about a specific child.
-- PUT /children/<int: child_id>: Update the details of a child.
+
+Request URI
+
+http://localhost:5000/children/2
+
+Response Body
+
+    {
+        "date_of_birth": "2019-03-12",
+        "emergency_contact_id": null,
+        "first_name": "Cloe",
+        "gender": "female",
+        "id": 2,
+        "last_name": "Punch",
+        "medical_info_id": null
+    }
+
+- PUT/PATCH /children/<int: child_id>: Update the details of a child.
+
+Request Body
+
+    {
+        "date_of_birth": "2020-07-11",
+        "first_name": "Michael Jake",
+        "gender": "male",
+        "last_name": "Mosely"
+    }
+
+Response Body
+
+    {
+        "date_of_birth": "2020-07-11",
+        "emergency_contact_id": null,
+        "first_name": "Michael Jake",
+        "gender": "male",
+        "id": 3,
+        "last_name": "Mosely",
+        "medical_info_id": null
+    }
+
 - DELETE /children/<int: child_id>: Delete a child record.
 
-- POST /guardian: Insert a new parent/guardian record.
-- GET /guardian/<int: guardian_id>: Retrieve information about a specific parent/guardian.
-- PUT /guardian/<int: guardian_id>: Update the details of a parent/guardian.
-- DELETE /guardian/<int: guardian_id>: Delete a parent/guardian record.
+Request URI
 
-- POST /emergency-contacts: Insert a new emergency contact record.
-- GET /emergency-contacts/<int: contact_id>: Retrieve information about a specific emergency contact.
-- PUT /emergency-contacts/<int: contact_id>: Update the details of an emergency contact.
-- DELETE /emergency-contacts/<int: contact_id>: Delete an emergency contact record.
+http://localhost:5000/children/3
+
+Response Body
+
+    {
+        "message": "The records for child #3 have been deleted."
+    }
+
+- POST /authorized-pickups: Insert a new authorized pickup record.
+- GET /authorized-pickups/<int: pickup_id>: Retrieve information about a specific authorized pickup.
+- PUT /authorized-pickups/<int: pickup_id>: Update the details of an authorized pickup.
+- DELETE /authorized-pickups/<int: pickup_id>: Delete an authorized pickup record.
 
 - POST /medical-information: Insert a new medical information record.
 - GET /medical-information/<int: info_id>: Retrieve information about a specific medical information record.
 - PUT /medical-information/<int: info_id>: Update the details of a medical information record.
 - DELETE /medical-information/<int: info_id>: Delete a medical information record.
 
-- POST /authorized-pickups: Insert a new authorized pickup record.
-- GET /authorized-pickups/<int: pickup_id>: Retrieve information about a specific authorized pickup.
-- PUT /authorized-pickups/<int: pickup_id>: Update the details of an authorized pickup.
-- DELETE /authorized-pickups/<int: pickup_id>: Delete an authorized pickup record.
+- POST /emergency-contacts: Insert a new emergency contact record.
+- GET /emergency-contacts/<int: contact_id>: Retrieve information about a specific emergency contact.
+- PUT /emergency-contacts/<int: contact_id>: Update the details of an emergency contact.
+- DELETE /emergency-contacts/<int: contact_id>: Delete an emergency contact record.
+
 
 ## Attendance Tracking:
 - POST /attendance: Record the arrival and departure times of a child.
@@ -114,9 +363,6 @@ Overall, an ORM simplifies database interactions, improves code organization, en
 - DELETE /attendance/<int: attendance_id>: Delete an attendance record.
 
 ## Scheduling and Calendar Management:
-
-- POST /auth/register-staff
-- POST /auth/login-staff
 
 - POST /schedule: Assign a task to a teacher/carer based on their availability and the schedule.
 - GET /schedule/<int: schedule_id>: Retrieve information about a specific task.

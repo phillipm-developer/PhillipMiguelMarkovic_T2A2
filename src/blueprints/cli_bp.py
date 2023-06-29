@@ -7,9 +7,6 @@ from models.child import Child
 from models.relationship import Relationship
 from models.guardian_child import GuardianChild
 from models.authorized_pickup import AuthorizedPickup
-from models.attendance import Attendance
-from models.attendance_status import AttendanceStatus
-from models.emergency_contact import EmergencyContact
 
 from init import db, bcrypt
 
@@ -22,7 +19,8 @@ def create_db():
     print('Tables created successfully')
 
 @cli_bp.cli.command('seed')
-def seed_db(): 
+def seed_db():
+
     roles = [
         Role(
             role_name = 'guardian',
@@ -37,6 +35,10 @@ def seed_db():
             role_desc = 'The childcare center administrator'
         )
     ]
+
+    db.session.query(Role).delete()
+    db.session.add_all(roles)
+    db.session.commit()
 
     relationships = [
         Relationship(
@@ -64,6 +66,10 @@ def seed_db():
             relationship_desc = 'Aunt of the child'
         )
     ]
+
+    db.session.query(Relationship).delete()
+    db.session.add_all(relationships)
+    db.session.commit()
 
     users = [
         User(
@@ -105,8 +111,22 @@ def seed_db():
             date_of_birth = '1969-02-14',
             gender = 'female',
             role_id = 3
+        ),
+        User(
+            first_name = 'Amy',
+            last_name = 'Baron',    
+            email = 'amy.baron@gmail.com',
+            password = bcrypt.generate_password_hash('password123').decode('utf8'),
+            phone_number = '0400 236 777',
+            date_of_birth = '1984-11-19',
+            gender = 'female',
+            role_id = 2
         )
     ]
+
+    db.session.query(User).delete()
+    db.session.add_all(users)
+    db.session.commit()
 
     guardians = [
         Guardian(
@@ -120,8 +140,18 @@ def seed_db():
             occupation = "Software Engineer",
             medical_info_consent = True,
             authorized_to_pickup = True
+        ),
+        Guardian(
+            user_id = 5,
+            occupation = "Project Manager",
+            medical_info_consent = True,
+            authorized_to_pickup = True
         )
     ]
+
+    db.session.query(Guardian).delete()
+    db.session.add_all(guardians)
+    db.session.commit()
 
     children = [
         Child(
@@ -137,6 +167,10 @@ def seed_db():
             gender = "female"
         )
     ]
+
+    db.session.query(Child).delete()
+    db.session.add_all(children)
+    db.session.commit()
 
     guardians_children = [
         GuardianChild(
@@ -161,6 +195,10 @@ def seed_db():
         )
     ]
 
+    db.session.query(GuardianChild).delete()
+    db.session.add_all(guardians_children)
+    db.session.commit()
+
     authorized_pickups = [
         AuthorizedPickup(
             child_id = 1,
@@ -170,87 +208,8 @@ def seed_db():
         )
     ]
 
-    # Truncate the authorized pickups table
     db.session.query(AuthorizedPickup).delete()
-    # Truncate the guardians_children table
-    db.session.query(GuardianChild).delete()
-    # Truncate the Children table
-    db.session.query(Child).delete()
-    # Truncate the User table
-    db.session.query(Guardian).delete()
-    # Truncate the User table
-    db.session.query(User).delete()
-    # Truncate the Role table
-    db.session.query(Role).delete()
-    # Truncate the relationships table
-    db.session.query(Relationship).delete()
-
-    db.session.query(AttendanceStatus).delete()
-
-    # Add the card to the session (transaction)
-    # db.session.add(card)
-    db.session.add_all(guardians)
-    db.session.add_all(users)
-    db.session.add_all(roles)
-    db.session.add_all(relationships)
-    db.session.add_all(children)
-    db.session.add_all(guardians_children)
     db.session.add_all(authorized_pickups)
-
-    attendance_statuses = [
-        AttendanceStatus(
-            status_name = 'Awaiting Arrival',
-            status_desc = 'Awaiting arrival of the child'
-        ),
-        AttendanceStatus(
-            status_name = 'Absent',
-            status_desc = 'Did not arrive within designated timeframe'
-        ),
-        AttendanceStatus(
-            status_name = 'Picked Up',
-            status_desc = 'Picked up by guardian or authorized pickup'
-        )
-    ]
-
-    attendances = [
-        Attendance(
-            child_id = 1,
-            date = date.today(),
-            arrival_time = datetime.now().strftime("%H:%M:%S"),
-            departure_time = datetime.now().strftime("%H:%M:%S"),
-            status_id = 1
-        ),
-        Attendance(
-            child_id = 2,
-            date = date.today(),
-            arrival_time = datetime.now().strftime("%H:%M:%S"),
-            departure_time = datetime.now().strftime("%H:%M:%S"),
-            status_id = 1
-        )
-    ]
-
-
-    emergency_contacts = [
-        EmergencyContact(
-            first_name = 'Mark',
-            last_name = 'Davies',
-            relationship_id = 3,
-            phone_number = '0400 516 999',
-            notes = 'Uncle of the child'
-        )
-    ]
-
-    # Truncate the attendances pickups table
-    db.session.query(Attendance).delete()
-    # Truncate the attendance_statuses table
-    db.session.query(AttendanceStatus).delete()
-    # Truncate the emergency contacts table
-    db.session.query(EmergencyContact).delete()
-
-    db.session.add_all(attendance_statuses)
-    db.session.add_all(attendances)
-    db.session.add_all(emergency_contacts)
-
-    # Commit the tranaction to the database
     db.session.commit()
+
     print('Models seeded')
