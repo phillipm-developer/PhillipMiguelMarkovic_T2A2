@@ -36,7 +36,7 @@ def one_guardian_child(guardian_child_id):
 def create_guardian_child():
     try:
         # Parse, sanitize and validate the incoming JSON data 
-        # via the schema
+        # via the GuardianChildschema
         guardian_child_info = GuardianChildSchema().load(request.json)
         print(guardian_child_info)
 
@@ -50,8 +50,9 @@ def create_guardian_child():
         db.session.add(guardian_child)
         db.session.commit()
 
+        print('Made it here!!!')
         # Return the new user excluding the password
-        return GuardianChildSchema().dump(guardian_child), 201
+        return GuardianChildSchema(exclude=['guardian_id', 'child_id', 'relationship_id']).dump(guardian_child), 201
     
     except IntegrityError:
         return {'error': 'Email address already in use'}, 409

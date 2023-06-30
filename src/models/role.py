@@ -12,3 +12,4 @@ class Role(db.Model):
 class RoleSchema(ma.Schema):
     class Meta:
         fields = ('id', 'role_name', 'role_desc')
+        ordered=True

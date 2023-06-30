@@ -7,6 +7,9 @@ class Relationship(db.Model):
     relationship_name = db.Column(db.String(50), nullable=False)
     relationship_desc = db.Column(db.Text())
 
+    guardian_child = db.relationship('GuardianChild', back_populates='relationship')
+
 class RelationshipSchema(ma.Schema):
     class Meta:
         fields = ('id', 'relationship_name', 'relationship_desc')
+        ordered=True

@@ -6,7 +6,6 @@ from models.guardian import Guardian
 from models.child import Child
 from models.relationship import Relationship
 from models.guardian_child import GuardianChild
-from models.authorized_pickup import AuthorizedPickup
 
 from init import db, bcrypt
 
@@ -203,19 +202,6 @@ def seed_db():
 
     db.session.query(GuardianChild).delete()
     db.session.add_all(guardians_children)
-    db.session.commit()
-
-    authorized_pickups = [
-        AuthorizedPickup(
-            child_id = 1,
-            first_name = 'Mark',
-            last_name = 'Davies',
-            relationship_id = 3
-        )
-    ]
-
-    db.session.query(AuthorizedPickup).delete()
-    db.session.add_all(authorized_pickups)
     db.session.commit()
 
     print('Models seeded')

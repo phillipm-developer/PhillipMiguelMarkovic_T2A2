@@ -32,3 +32,4 @@ class GuardianSchema(ma.Schema):
     class Meta:
         # fields = ('id', 'occupation', 'medical_info_consent', 'authorized_to_pickup', 'user', 'guardian_child')
         fields = ('id', 'occupation', 'medical_info_consent', 'authorized_to_pickup', 'user')
+        ordered=True

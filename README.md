@@ -555,18 +555,35 @@ Response Body
             "id": 3,
             "last_name": "Jones"
         },
-        "child_id": 3,
         "guardian": {
             "authorized_to_pickup": true,
             "id": 1,
             "medical_info_consent": true,
-            "occupation": "Delivery Driver"
+            "occupation": "Delivery Driver",
+            "user": {
+                "date_of_birth": "1974-09-23",
+                "email": "spam@spam.com",
+                "first_name": "John",
+                "gender": "male",
+                "id": 1,
+                "last_name": "Davies",
+                "phone_number": "98885656",
+                "role": {
+                    "id": 1,
+                    "role_desc": "The parent or legal guardian of the child",
+                    "role_name": "guardian"
+                },
+                "role_id": 1
+            }
         },
-        "guardian_id": 1,
         "id": 5,
-        "relationship_id": 1
+        "relationship": {
+            "id": 1,
+            "relationship_desc": "Parent of the child",
+            "relationship_name": "Father"
+        }
     }
-
+    
 PUT/PATCH /guardians_children/<int: guardians_children_id>: Update a single guardian-child relationship.
 
 Request Body

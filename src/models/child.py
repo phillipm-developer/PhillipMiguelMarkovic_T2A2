@@ -62,4 +62,4 @@ class ChildSchema(ma.Schema):
     class Meta:
         # fields = ('id', 'first_name', 'last_name', 'date_of_birth', 'gender', 'medical_info_id', 'emergency_contact_id', 'guardian_child')
         fields = ('id', 'first_name', 'last_name', 'date_of_birth', 'gender', 'medical_info_id', 'emergency_contact_id')
-
+        ordered=True
