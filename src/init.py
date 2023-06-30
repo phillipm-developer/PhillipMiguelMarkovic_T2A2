@@ -7,3 +7,5 @@ db = SQLAlchemy()
 ma = Marshmallow()
 bcrypt = Bcrypt()
 jwt = JWTManager()
+
+VALID_GENDERS = ['Male', 'Female', 'Non-binary']

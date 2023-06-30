@@ -110,6 +110,73 @@ Response Body
         }
     }
 
+Response Body: When web token fails for any other route
+
+    {
+        "msg": "Signature verification failed"
+    }
+
+- GET /users: Get all user records
+
+Request URI
+
+http://localhost:5000/users
+
+Response Body
+
+    [
+        {
+            "date_of_birth": "1974-09-23",
+            "email": "spam@spam.com",
+            "first_name": "John",
+            "gender": "male",
+            "id": 1,
+            "last_name": "Davies",
+            "phone_number": "98885656",
+            "role": {
+                "id": 1,
+                "role_desc": "The parent or legal guardian of the child",
+                "role_name": "guardian"
+            }
+        },
+        {
+            "date_of_birth": "1976-04-03",
+            "email": "tomato@spam.com",
+            "first_name": "Joan",
+            "gender": "female",
+            "id": 2,
+            "last_name": "Davies",
+            "phone_number": "98885656",
+            "role": {
+                "id": 1,
+                "role_desc": "The parent or legal guardian of the child",
+                "role_name": "guardian"
+            }
+        } ...
+    ]
+
+- GET /users/<int: user_id>: get single user record
+
+Request URI
+
+http://localhost:5000/users/2
+
+Response Body
+
+    {
+        "date_of_birth": "1976-04-03",
+        "email": "tomato@spam.com",
+        "first_name": "Joan",
+        "gender": "female",
+        "id": 2,
+        "last_name": "Davies",
+        "phone_number": "98885656",
+        "role": {
+            "id": 1,
+            "role_desc": "The parent or legal guardian of the child",
+            "role_name": "guardian"
+        }
+    }
 
 - POST /guardians: Insert a new parent/guardian record.
 
@@ -135,7 +202,7 @@ Response Body
 
     {
         "authorized_to_pickup": true,
-        "id": 3,
+        "id": 4,
         "medical_info_consent": true,
         "occupation": "Delivery Driver",
         "user": {
@@ -143,10 +210,14 @@ Response Body
             "email": "joseph.parker@tpg.com.au",
             "first_name": "Joseph",
             "gender": "male",
-            "id": 5,
+            "id": 6,
             "last_name": "Parker",
             "phone_number": "0400 181 797",
-            "role_id": 1
+            "role": {
+                "id": 1,
+                "role_desc": "The parent or legal guardian of the child",
+                "role_name": "guardian"
+            }
         }
     }
 

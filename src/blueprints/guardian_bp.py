@@ -4,7 +4,8 @@ from models.user import User, UserSchema
 from models.guardian import Guardian, GuardianSchema
 from init import db, bcrypt
 from sqlalchemy.exc import IntegrityError
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required
+from blueprints.auth_bp import admin_required
 
 guardian_bp = Blueprint('guardians', __name__, url_prefix='/guardians')
 
@@ -69,7 +70,7 @@ def create_guardian():
         db.session.commit()
 
         # Return the new user excluding the password
-        return GuardianSchema(exclude=['user.password']).dump(guardian), 201
+        return GuardianSchema(exclude=['user.password', 'user.role_id']).dump(guardian), 201
     
     except IntegrityError:
         return {'error': 'Email address already in use'}, 409
@@ -111,9 +112,3 @@ def delete_guardian(guardian_id):
         return {'error': 'Guardian not found'}, 404
 
 
-def admin_required():
-    user_email = get_jwt_identity()
-    stmt = db.select(User).filter_by(email=user_email)
-    user = db.session.scalar(stmt)
-    if not (user and user.is_admin):
-        abort(401)

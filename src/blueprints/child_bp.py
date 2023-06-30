@@ -4,7 +4,8 @@ from models.user import User, UserSchema
 from models.child import Child, ChildSchema
 from init import db, bcrypt
 from sqlalchemy.exc import IntegrityError
-from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+from flask_jwt_extended import jwt_required
+from blueprints.auth_bp import admin_required
 
 child_bp = Blueprint('children', __name__, url_prefix='/children')
 
@@ -97,9 +98,3 @@ def delete_child(child_id):
         return {'error': 'Child not found'}, 404
 
 
-def admin_required():
-    user_email = get_jwt_identity()
-    stmt = db.select(User).filter_by(email=user_email)
-    user = db.session.scalar(stmt)
-    if not (user and user.is_admin):
-        abort(401)

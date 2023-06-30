@@ -4,7 +4,8 @@ from models.user import User, UserSchema
 from models.guardian_child import GuardianChild, GuardianChildSchema
 from init import db, bcrypt
 from sqlalchemy.exc import IntegrityError
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required
+from blueprints.auth_bp import admin_required
 
 guardian_child_bp = Blueprint('guardians_children', __name__, url_prefix='/guardians_children')
 
@@ -91,10 +92,3 @@ def delete_guardian(guardian_child_id):
     else:
         return {'error': 'Guardian not found'}, 404
 
-
-def admin_required():
-    user_email = get_jwt_identity()
-    stmt = db.select(User).filter_by(email=user_email)
-    user = db.session.scalar(stmt)
-    if not (user and user.is_admin):
-        abort(401)
