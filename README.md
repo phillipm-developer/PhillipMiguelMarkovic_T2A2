@@ -917,7 +917,7 @@ In the process of creating each child an entry is made into the medical_informat
 
 This entry is recorded as a foreign key in the child table and is a one-to-one relationship. One child is only ever associated with one medical information entry which contains the medical data for that specific child.
 
-### One-to-ManyOne Relationship: Children to Emergency Contacts
+### One-to-One Relationship: Children to Emergency Contacts
 
 Like in the previous example, the process of creating each child an entry is made into the emergency_contacts table which is also empty by default. This table entry is later updated by guardians and staff members and the point of contact for any emergencies.
 
@@ -925,6 +925,11 @@ This entry is recorded as a foreign key in the child table and is a one-to-one r
 
 These database relations help establish the associations between the different entities in the childcare management system, enabling efficient storage and retrieval of information for enrollment, registration, and other operations.
 
+### One-to-One Relationship: Guardians to Users
+
+For the purposes of normalisation the information in the users entity was extracted out into its own table as it is information common to guardians, carers and childrcare administrators alike. So each user_id exists as a foreign key in other tables like guardians, which contains information spefic to guardians like their occupation or whether they are an authorized pickup. 
+
+One guardian can only ever be associated with one user as they are the same individual.
 
 # R10. Describe the way tasks are allocated and tracked in your project
 
