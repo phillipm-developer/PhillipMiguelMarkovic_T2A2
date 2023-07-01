@@ -866,38 +866,62 @@ By utilizing these third-party services, the childcare management system Flask W
 
 # R9. Discuss the database relations to be implemented in your application
 
-This project 
+This web api project represents a small subset of the functionality of a childcare management system. It aims to provide backend support for enrollment and registration. The following tables capture the informational requirements for this function:
 
-The childcare management system under development requires the following relationships to exist between tables (entities) to be able to support the requirements. 
+* Children
+* Guardians
+* Guardians_Children
+* Relationships
+* Users
+* Roles
+* Medical_Information
+* Emergency_Contacts
 
 Based on the description provided, the childcare management system would require the following database relations:
 
-1. One-to-Many Relationship: Children to Guardians
-   - The `children` table has a foreign key referencing the `guardians` table, indicating that each child can have one or more guardians.
-   - This relationship allows multiple guardians to be associated with a child.
+Tobe able to effectively access, traverse and maintain the integrity of this datbase the following database elations are required.
 
-2. Many-to-Many Relationship: Guardians to Children (Join Table)
-   - The `guardians_children` table serves as a join table between the `guardians` table and the `children` table.
-   - It establishes a many-to-many relationship, allowing multiple children to be associated with multiple guardians.
-   - This table would have foreign keys referencing both the `guardians` and `children` tables.
+### One-to-Many Relationship: Children to Guardians
 
-3. One-to-Many Relationship: Guardians to Relationships
-   - The `guardians` table has a foreign key referencing the `relationships` table.
-   - This relationship captures the different types of relationships (e.g., mother, father, uncle) that can exist between a guardian and a child.
+A one to many relationship is a type of cardinality where one entity is related to one or more other entities and where that collection of entities relates to only one entity. Strictly speaking a child in this system can have one or more guardians. A child can have a mother, or a mother and a father or an additional legal guardian like an agent from assigned from child services.
 
-4. One-to-Many Relationship: Users to Roles
-   - The `users` table has a foreign key referencing the `roles` table.
-   - This relationship allows each user to have a specific role (e.g., Guardian, Carer, Childcare Administrator).
+### One-to-Many Relationship: Guardians to Children
 
-5. One-to-Many Relationship: Children to Medical Information
-   - The `children` table has a foreign key referencing the `medical_information` table.
-   - This relationship allows each child to have specific medical information stored in the `medical_information` table.
-   - For every child in the `children` table, there is a corresponding entry in the `medical_information` table.
+A one to many relationship also exists between guardians and children. One guardian can be associated with one or more children. As a business rule it makes the most sense to enroll at least one guardian at the beginning, and then enroll children associated with that gurdian. 
 
-6. One-to-Many Relationship: Children to Emergency Contacts
-   - The `children` table has a foreign key referencing the `emergency_contacts` table.
-   - This relationship allows each child to have one or more emergency contacts stored in the `emergency_contacts` table.
-   - For every child in the `children` table, there is a corresponding entry in the `emergency_contacts` table.
+### Many-to-Many Relationship: Guardians to Children (Join Table)
+
+The previous 2 senarios present a common problem. Both entities (guardians and children) effectively have a many-to-many relationship between them. Left on their own these two tables have the potential to create data redundancy and inconsistent behavior. The solution is to create a join table called guardians_children which serves to record the associations between each guardian and child. Each row in this table contains a foreign key to the child table and a foreign key to the guardian table. Each row or relationship has its own primary key so that each association is uniquely recorded and identified.
+
+Once a guardian and child are created as entries in their respective tables, the system will associate them by making an entry into the guardians_children table. There are separate endpoints for insertion into this table.
+
+At some point a user may want to delete a child or gaurdian individually. Deleting from either table will result in a referential integrity error, and the database software will prevent them from doing this. One senario where this can happen is if a parent has 2 children at the centre. One of the children is to be withdrawn upon reaching the age of maturity (6 years old). The other child is still young and will remain behind. To accomplish this safely the foreign keys (guardian_id and child_id) in the table defined with an ON CASCADE DELETE statement.
+
+    FOREIGN KEY (child_id) REFERENCES children (child_id) ON DELETE CASCADE
+    FOREIGN KEY (guardian_id) REFERENCES children (guardian_id) ON DELETE CASCADE
+
+This means that when a user deletes a child, all references to that child in the guardians_children table will be deleted. This also applies a guadian is deleted. All references in guardians_children are removed.
+
+### One-to-Many Relationship: Relationships to Guardians_Children (Join Table)
+
+The guardians_children join table contains a field called relationship_id which is a foreign key referencing the relationship table. This foreign key is appropriately placed here to represent the relationship type between the guardian and child (Father, Mother, Maternal Aunt, etc). One guardian_child entry can only have one relationship type, but a relationship type can be used by many guardian/child pairings.
+
+
+### One-to-Many Relationship: Users to Roles
+
+The users table has a foreign key referencing the roles table. A role is either a guardian, carer or childcare administrator. All users of the system (for the purposes of this project) fall under one of these categories. A user can only have one role but a role can be used by many users. 
+
+### One-to-One Relationship: Children to Medical Information
+
+In the process of creating each child an entry is made into the medical_information table which contains no data. This table entry is later updated by guardians and staff members and acts as a permanent log of the childs medical information.
+
+This entry is recorded as a foreign key in the child table and is a one-to-one relationship. One child is only ever associated with one medical information entry which contains the medical data for that specific child.
+
+### One-to-ManyOne Relationship: Children to Emergency Contacts
+
+Like in the previous example, the process of creating each child an entry is made into the emergency_contacts table which is also empty by default. This table entry is later updated by guardians and staff members and the point of contact for any emergencies.
+
+This entry is recorded as a foreign key in the child table and is a one-to-one relationship. One child is only ever associated with one emergency_contact entry which contains the contact details of said person.
 
 These database relations help establish the associations between the different entities in the childcare management system, enabling efficient storage and retrieval of information for enrollment, registration, and other operations.
 
