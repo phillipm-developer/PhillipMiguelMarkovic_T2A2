@@ -38,7 +38,6 @@ def create_guardian():
         # Parse, sanitize and validate the incoming JSON data 
         # via the schema
         user_info = GuardianSchema().load(request.json)
-        print(user_info)
 
         # Create a new User model instance with the schema data
         user = User(
@@ -55,8 +54,6 @@ def create_guardian():
         # Add and commit the new user
         db.session.add(user)
         db.session.commit()
-
-        print(user.id)
 
         guardian = Guardian(
             user_id = user.id,
@@ -76,7 +73,7 @@ def create_guardian():
         return {'error': 'Email address already in use'}, 409
 
 
-# Update a card
+# Update a guardian
 @guardian_bp.route('/<int:guardian_id>', methods=['PUT', 'PATCH'])
 @jwt_required()
 def update_guardian(guardian_id):
@@ -104,8 +101,9 @@ def delete_guardian(guardian_id):
     guardian = db.session.scalar(stmt)
 
     if guardian:
-        # admin_or_owner_required(guardian.user.id)
         db.session.delete(guardian)
+        # Delete the corresponding user as the guardian can no longer interact with the system any more.
+        db.session.delete(guardian.user)
         db.session.commit()
         return {"message": f"The records for guardian #{guardian.id} have been deleted."}, 200
     else:

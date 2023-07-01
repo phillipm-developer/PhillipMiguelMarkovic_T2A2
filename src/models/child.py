@@ -1,7 +1,7 @@
 from init import db, ma, VALID_GENDERS
 from marshmallow import fields, validates_schema, validates
 from marshmallow.exceptions import ValidationError
-from marshmallow.validate import Length, OneOf, And, Regexp, Range
+from marshmallow.validate import Length, And, Regexp
 from datetime import date
 
 class Child(db.Model):
@@ -12,13 +12,19 @@ class Child(db.Model):
     last_name = db.Column(db.String)
     date_of_birth = db.Column(db.Date())
     gender = db.Column(db.String)
-    medical_info_id = db.Column(db.Integer)
-    emergency_contact_id = db.Column(db.Integer)
 
-    guardian_child = db.relationship('GuardianChild', back_populates='child')
+    medical_info_id = db.Column(db.Integer, db.ForeignKey('medical_information.id'))
+    medical_info =  db.relationship('MedicalInformation', back_populates='child')
+
+    emergency_contact_id = db.Column(db.Integer, db.ForeignKey('emergency_contacts.id'))
+    emergency_contact =  db.relationship('EmergencyContact', back_populates='child')
+
+    guardian_child = db.relationship('GuardianChild', back_populates='child', cascade='all, delete')
 
 class ChildSchema(ma.Schema):
     guardian_child = fields.List(fields.Nested('GuardianChildSchema'))
+    medical_info = fields.Nested('MedicalInformationSchema')
+    emergency_contact = fields.Nested('EmergencyContactSchema')
 
     first_name = fields.String(required=True, validate=And(
         Length(min=2, max= 50, error='First name must be 2 to 50 characters long'),
@@ -61,5 +67,5 @@ class ChildSchema(ma.Schema):
 
     class Meta:
         # fields = ('id', 'first_name', 'last_name', 'date_of_birth', 'gender', 'medical_info_id', 'emergency_contact_id', 'guardian_child')
-        fields = ('id', 'first_name', 'last_name', 'date_of_birth', 'gender', 'medical_info_id', 'emergency_contact_id')
+        fields = ('id', 'first_name', 'last_name', 'date_of_birth', 'gender', 'medical_info_id', 'medical_info', 'emergency_contact_id', 'emergency_contact')
         ordered=True

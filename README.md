@@ -178,6 +178,42 @@ Response Body
         }
     }
 
+- POST /users: Insert a new user record.
+
+Request Body
+
+{
+	"date_of_birth": "1974-09-23",
+	"email": "paul.briggs222@tpg.com.au",
+	"password": "password123",
+	"first_name": "Paul",
+	"gender": "male",
+	"last_name": "Briggs",
+	"phone_number": "0400 561 216",
+	"role_id": 3
+}
+
+Response Body
+
+{
+    "date_of_birth": "1974-09-23",
+    "email": "paul.briggs222@tpg.com.au",
+    "first_name": "Paul",
+    "gender": "Male",
+    "id": 8,
+    "last_name": "Briggs",
+    "password": "password123",
+    "phone_number": "0400 561 216",
+    "role": {
+        "id": 3,
+        "role_desc": "The childcare center administrator",
+        "role_name": "administrator"
+    }
+}
+
+
+http://localhost:5000/users/1
+
 - POST /guardians: Insert a new parent/guardian record.
 
 Request Body
@@ -221,7 +257,20 @@ Response Body
         }
     }
 
+
+- DELETE /users/<int: user_id>: Delete a child record.
+
 Request URI
+
+http://localhost:5000/users/1
+
+Response Body
+
+    {
+        "message": "The records for user #1 - John Davies have been deleted."
+    }
+
+Rrequest URI
 
 http://localhost:5000/guardians
 
@@ -467,6 +516,124 @@ Response Body
         "message": "The records for child #3 have been deleted."
     }
 
+
+GET /children/<int: child_id>/medical_info
+
+Request URI
+
+http://localhost:5000/children/8/medical_info
+
+Response Body
+
+    {
+        "date_of_birth": "2016-07-11",
+        "emergency_contact_id": null,
+        "first_name": "Michael",
+        "gender": "Male",
+        "id": 8,
+        "last_name": "Mosely",
+        "medical_info": {
+            "allergies": "",
+            "dietary_restrictions": "",
+            "id": 8,
+            "medications": "",
+            "notes": "",
+            "special_needs": ""
+        }
+    }
+
+PUT/PATCH /children/<int: child_id>/medical_info
+
+Request URI
+
+http://localhost:5000/children/7/medical_info
+
+Request Body
+
+    {
+        "allergies": "dvfsdg",
+        "dietary_restrictions": "fgdfg",
+        "medications": "dfgdsg",
+        "notes": "dfgdfd",
+        "special_needs": "534346"
+    }
+
+Response Body
+
+    {
+        "date_of_birth": "2016-07-11",
+        "emergency_contact_id": null,
+        "first_name": "Michael",
+        "gender": "Male",
+        "id": 7,
+        "last_name": "Mosely",
+        "medical_info": {
+            "allergies": "dvfsdg",
+            "dietary_restrictions": "fgdfg",
+            "id": 7,
+            "medications": "dfgdsg",
+            "notes": "dfgdfd",
+            "special_needs": "534346"
+        }
+    }
+
+
+
+
+GET /children/<int: child_id>/emergency_contact
+
+Request URI
+
+http://localhost:5000/children/2/emergency_contact
+
+    {
+        "date_of_birth": "2019-03-12",
+        "emergency_contact": {
+            "first_name": "John",
+            "id": 2,
+            "last_name": "Mecina",
+            "notes": "Just some random text ...",
+            "phone_number": "0401 856 715",
+            "relationship": "Uncle"
+        },
+        "first_name": "Cloe",
+        "gender": "female",
+        "id": 2,
+        "last_name": "Punch",
+        "medical_info_id": 2
+    }
+
+PUT/PATCH /children/<int: child_id>/emergency_contact
+
+Request Body
+
+    {
+        "first_name": "John",
+        "last_name": "Mecina",
+        "notes": "Just some random text ...",
+        "phone_number": "0401 856 715",
+        "relationship": "Uncle"
+    }
+
+Response Body
+
+    {
+        "date_of_birth": "2020-07-11",
+        "emergency_contact": {
+            "first_name": "John",
+            "id": 1,
+            "last_name": "Mecina",
+            "notes": "Just some random text ...",
+            "phone_number": "0401 856 715",
+            "relationship": "Uncle"
+        },
+        "first_name": "Anthony",
+        "gender": "male",
+        "id": 1,
+        "last_name": "Punch",
+        "medical_info_id": 1
+    }
+
 GET /guardians_children: Returns the relationship that exists between guardians and their children
 
 Request URI
@@ -539,11 +706,11 @@ POST /guardians_children
 
 Request Body
 
-{
-	"guardian_id": 1,
-	"child_id": 3, 
-	"relationship_id": 1
-}
+    {
+        "guardian_id": 1,
+        "child_id": 3, 
+        "relationship_id": 1
+    }
 
 Response Body
 
@@ -583,7 +750,7 @@ Response Body
             "relationship_name": "Father"
         }
     }
-    
+
 PUT/PATCH /guardians_children/<int: guardians_children_id>: Update a single guardian-child relationship.
 
 Request Body
@@ -699,7 +866,41 @@ By utilizing these third-party services, the childcare management system Flask W
 
 # R9. Discuss the database relations to be implemented in your application
 
-There are 2 one to many relationships
+This project 
+
+The childcare management system under development requires the following relationships to exist between tables (entities) to be able to support the requirements. 
+
+Based on the description provided, the childcare management system would require the following database relations:
+
+1. One-to-Many Relationship: Children to Guardians
+   - The `children` table has a foreign key referencing the `guardians` table, indicating that each child can have one or more guardians.
+   - This relationship allows multiple guardians to be associated with a child.
+
+2. Many-to-Many Relationship: Guardians to Children (Join Table)
+   - The `guardians_children` table serves as a join table between the `guardians` table and the `children` table.
+   - It establishes a many-to-many relationship, allowing multiple children to be associated with multiple guardians.
+   - This table would have foreign keys referencing both the `guardians` and `children` tables.
+
+3. One-to-Many Relationship: Guardians to Relationships
+   - The `guardians` table has a foreign key referencing the `relationships` table.
+   - This relationship captures the different types of relationships (e.g., mother, father, uncle) that can exist between a guardian and a child.
+
+4. One-to-Many Relationship: Users to Roles
+   - The `users` table has a foreign key referencing the `roles` table.
+   - This relationship allows each user to have a specific role (e.g., Guardian, Carer, Childcare Administrator).
+
+5. One-to-Many Relationship: Children to Medical Information
+   - The `children` table has a foreign key referencing the `medical_information` table.
+   - This relationship allows each child to have specific medical information stored in the `medical_information` table.
+   - For every child in the `children` table, there is a corresponding entry in the `medical_information` table.
+
+6. One-to-Many Relationship: Children to Emergency Contacts
+   - The `children` table has a foreign key referencing the `emergency_contacts` table.
+   - This relationship allows each child to have one or more emergency contacts stored in the `emergency_contacts` table.
+   - For every child in the `children` table, there is a corresponding entry in the `emergency_contacts` table.
+
+These database relations help establish the associations between the different entities in the childcare management system, enabling efficient storage and retrieval of information for enrollment, registration, and other operations.
+
 
 # R10. Describe the way tasks are allocated and tracked in your project
 

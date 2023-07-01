@@ -14,7 +14,7 @@ class Guardian(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('User', back_populates='guardian')
 
-    guardian_child = db.relationship('GuardianChild', back_populates='guardian')
+    guardian_child = db.relationship('GuardianChild', back_populates='guardian', cascade='all, delete')
 
 class GuardianSchema(ma.Schema):
     # Tell marshmallow to use UserSchema to serialize 'user' field

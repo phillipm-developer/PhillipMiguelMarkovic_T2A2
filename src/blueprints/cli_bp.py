@@ -6,6 +6,8 @@ from models.guardian import Guardian
 from models.child import Child
 from models.relationship import Relationship
 from models.guardian_child import GuardianChild
+from models.medical_information import MedicalInformation
+from models.emergency_contact import EmergencyContact
 
 from init import db, bcrypt
 
@@ -152,24 +154,87 @@ def seed_db():
     db.session.add_all(guardians)
     db.session.commit()
 
+    medical_info_list = [
+        MedicalInformation(
+            dietary_restrictions ="",
+            allergies ="",
+            medications ="",
+            special_needs ="",
+            notes =""
+        ),
+        MedicalInformation(
+            dietary_restrictions ="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ...",
+            allergies ="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ...",
+            medications ="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ...",
+            special_needs ="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ...",
+            notes ="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ..."
+        ),
+        MedicalInformation(
+            dietary_restrictions ="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ...",
+            allergies ="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ...",
+            medications ="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ...",
+            special_needs ="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ...",
+            notes ="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ..."
+        )
+    ]    
+
+    db.session.query(MedicalInformation).delete()
+    db.session.add_all(medical_info_list)
+    db.session.commit()
+
+    emergency_contact_list = [
+        EmergencyContact(
+            first_name = "",
+            last_name = "",
+            relationship = "",
+            phone_number = "",
+            notes = ""
+        ),
+        EmergencyContact(
+            first_name = "John",
+            last_name = "Mecina",
+            relationship = "Uncle",
+            phone_number = "0401 856 715",
+            notes = "Just some random text ..."
+        ),
+        EmergencyContact(
+            first_name = "Angela",
+            last_name = "Robbins",
+            relationship = "Maternal Aunt",
+            phone_number = "0400 201 655",
+            notes = "Just some random text ..."
+        )
+        
+    ]
+
+    db.session.query(EmergencyContact).delete()
+    db.session.add_all(emergency_contact_list)
+    db.session.commit()
+
     children = [
         Child(
             first_name = "Anthony",
             last_name = "Punch",
             date_of_birth = "2020-07-11",
-            gender = "male"
+            gender = "male",
+            medical_info_id = 1,
+            emergency_contact_id = 1
         ),
         Child(
             first_name = "Cloe",
             last_name = "Punch",
             date_of_birth = "2019-03-12",
-            gender = "female"
+            gender = "female",
+            medical_info_id = 2,
+            emergency_contact_id = 2
         ),
         Child(
             first_name = "Maisie",
             last_name = "Jones",
             date_of_birth = "2019-10-16",
-            gender = "female"
+            gender = "female",
+            medical_info_id = 3,
+            emergency_contact_id = 3
         )
     ]
 
