@@ -584,7 +584,7 @@ http://localhost:5000/users/1
 
         http://localhost:5000/guardians/3
 
-*Response Body
+* Response Body
 
         {
             "message": "The records for guardian #3 have been deleted."
@@ -1045,49 +1045,49 @@ Response Body
 
 * Request Body
 
-    {
-        "guardian_id": 1,
-        "child_id": 3, 
-        "relationship_id": 2
-    }
+        {
+            "guardian_id": 1,
+            "child_id": 3, 
+            "relationship_id": 2
+        }
 
 * Response Body
 
-    {
-        "child": {
-            "date_of_birth": "2019-10-16",
-            "first_name": "Maisie",
-            "gender": "female",
-            "id": 3,
-            "last_name": "Jones"
-        },
-        "guardian": {
-            "authorized_to_pickup": true,
-            "id": 1,
-            "medical_info_consent": true,
-            "occupation": "Delivery Driver",
-            "user": {
-                "date_of_birth": "1974-09-23",
-                "email": "spam@spam.com",
-                "first_name": "John",
-                "gender": "male",
+        {
+            "child": {
+                "date_of_birth": "2019-10-16",
+                "first_name": "Maisie",
+                "gender": "female",
+                "id": 3,
+                "last_name": "Jones"
+            },
+            "guardian": {
+                "authorized_to_pickup": true,
                 "id": 1,
-                "last_name": "Davies",
-                "phone_number": "98885656",
-                "role": {
+                "medical_info_consent": true,
+                "occupation": "Delivery Driver",
+                "user": {
+                    "date_of_birth": "1974-09-23",
+                    "email": "spam@spam.com",
+                    "first_name": "John",
+                    "gender": "male",
                     "id": 1,
-                    "role_desc": "The parent or legal guardian of the child",
-                    "role_name": "guardian"
+                    "last_name": "Davies",
+                    "phone_number": "98885656",
+                    "role": {
+                        "id": 1,
+                        "role_desc": "The parent or legal guardian of the child",
+                        "role_name": "guardian"
+                    }
                 }
+            },
+            "id": 1,
+            "relationship": {
+                "id": 2,
+                "relationship_desc": "Parent of the child",
+                "relationship_name": "Mother"
             }
-        },
-        "id": 1,
-        "relationship": {
-            "id": 2,
-            "relationship_desc": "Parent of the child",
-            "relationship_name": "Mother"
         }
-    }
 
 # /guardians_children/<int: guardians_children_id>
 
