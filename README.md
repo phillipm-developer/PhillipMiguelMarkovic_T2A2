@@ -828,30 +828,57 @@ Response Body
 
 # R6. An ERD for your app
 
-
 ![Enrollment](docs/Enrollment%20and%20Registration.drawio.png)
-
 
 
 # R7. Detail any third party services that your app will use
 
-The following is a detailed description of third-party services used the Chilcare Management System Web API and how they are used to carry out the functions specified in the user stories.
+The following is a detailed description of third-party services used in the Chilcare Management System Web API and how they are used to record and manage data of users and children.
 
-1. SQLAlchemy: SQLAlchemy is an ORM (Object-Relational Mapping) library that simplifies database operations by providing a high-level interface for interacting with relational databases. In the childcare management system, SQLAlchemy will be used to define the database models for children, parents & guardians, emergency contacts, medical information, authorized pickups, and schedules. It facilitates the creation, retrieval, updating, and deletion of records in the database (CRUD operations), making it easier to manage and persist data.
+### SQLAlchemy
 
-2. flask-marshmallow: flask-marshmallow is a Flask integration of the Marshmallow library, which allows for easy serialization and deserialization of complex data objects to and from JSON. In the childcare management system, flask-marshmallow will be used to define schemas for data models, such as children, parents, emergency contacts, and schedules. It helps with data validation, input/output formatting, and serialization/deserialization of data between the API and clients.
+SQLAlchemy is a python ORM (Object-Relational Mapping) library that provides a high level interface to perform database operations on a relational database management system. SQLAlchemy is database independant, and can connect to MySQL or SQLite just as easily with the correct adapter/driver. In the childcare management system, SQLAlchemy will be used to define the database models for children, parents & guardians, emergency contacts and medical information. It facilitates the creation, retrieval, updating, and deletion of records in the database (CRUD operations), making it easier to manage and persist data. SQLAlchemy is supported in an application through the follwing import.
 
-3. python-dotenv: python-dotenv is a package that enables the loading of environment variables from a ".env" file into a Flask application. In the childcare management system, python-dotenv will be utilized to store sensitive information like database credentials and API keys outside of the source code. It allows for easy configuration management and separation of sensitive information from the application code.
+    from flask_sqlalchemy import SQLAlchemy
 
-4. psycopg2: psycopg2 is a PostgreSQL adapter for Python, providing connectivity and interaction with PostgreSQL databases. Since you've chosen PostgreSQL as the database system for the childcare management system, psycopg2 will be used to establish connections, execute SQL queries, and handle database operations within the Flask Web API.
+### Flask-marshmallow
 
-5. pip-review: pip-review is a package that assists in managing and updating Python packages installed in a project. It ensures that the project remains up-to-date with the latest package releases, including security patches and new features. In the childcare management system, pip-review will help to review outdated packages and upgrade them, ensuring the project's dependencies are up-to-date and secure.
+Flask-marshmallow is a Flask integration layer of the Marshmallow library, which allows for easy serialization and deserialization of complex data objects to and from JSON. It integrates well with SQLAlchemy. In the childcare management system, flask-marshmallow will be used to define schemas for data models, such as children, guiardians, emergency contacts and medical information. It helps with data validation, input/output formatting, and serialization/deserialization of data between the API and clients. These are some sample imports that can be used from the flask-marshmallow library.
 
-6. Flask-Bcrypt: Flask-Bcrypt is a Flask extension that provides password hashing and verification capabilities using the bcrypt algorithm. In the childcare management system, Flask-Bcrypt will be used to securely store and verify passwords for parents, guardians, and carers. It helps protect sensitive user information by encrypting passwords before storing them in the database.
+    from marshmallow import fields
+    from marshmallow.validate import Length, And, Regexp
+    from marshmallow.exceptions import ValidationError
 
-7. Flask-JWT-Extended: Flask-JWT-Extended is a Flask extension that adds JSON Web Token (JWT) support to an application for authentication and access control. In the childcare management system, Flask-JWT-Extended will be used to handle user authentication and generate secure JWTs for authorized access to protected API endpoints. It helps ensure that only authenticated users can access and modify sensitive data, such as enrollment information, attendance records, and schedules.
+### Python-dotenv
 
-By utilizing these third-party services, the childcare management system Flask Web API benefits from streamlined database operations with SQLAlchemy, seamless data serialization and validation with flask-marshmallow, secure handling of sensitive information with python-dotenv, connectivity to the PostgreSQL database with psycopg2, efficient package management with pip-review, password security with Flask-Bcrypt, and authentication and access control with Flask-JWT-Extended. Together, these services provide essential functionalities and enhance the overall security and usability of the childcare management system.
+Python-dotenv is a package that enables the loading of environment variables from a ".env" file into a Flask application. In the childcare management system, python-dotenv will be utilized to store sensitive information like the database connection URI and json web token keys outside of the source code. This allows the developer to separate sensitive configuration information from the python code.
+
+### Psycopg2
+
+Psycopg2 is a PostgreSQL adapter for Python, that allows a python application to interface with a PostgreSQL driver to connect to PostgreSQL databases. Since PostgreSQL has been chosen as the database system for the childcare management system, psycopg2 will be used to establish connections, execute SQL queries, and handle database operations within the Flask Web API.
+
+### Flask-Bcrypt
+
+Flask-Bcrypt is a Flask extension that provides password hashing and verification capabilities using the bcrypt algorithm. In the childcare management system, Flask-Bcrypt will be used to securely store and verify passwords for parents, guardians, and carers. It helps protect sensitive user information by encrypting passwords before storing them in the database.
+
+### Flask-JWT-Extended
+Flask-JWT-Extended is a Flask extension that adds JSON Web Token (JWT) support to an application for authentication and access control during a session. In the childcare management system, Flask-JWT-Extended will be used to handle user authentication and generate secure JWTs (JSON Web Tokens) for authorized access to protected API endpoints. It helps ensure that only authenticated users can access and modify sensitive data, such as enrollment and medical information.
+
+By utilizing these third-party services, the childcare management system Flask Web API has access to a full range of features and capabilities to run the web application securely and to tightly control access to protected information.
+
+## Sources
+
+https://www.sqlalchemy.org/
+
+https://flask-marshmallow.readthedocs.io/en/latest/
+
+https://betterdatascience.com/python-dotenv/
+
+https://www.psycopg.org/docs/
+
+https://flask-bcrypt.readthedocs.io/en/1.0.1/
+
+https://4geeks.com/lesson/what-is-JWT-and-how-to-implement-with-Flask
 
 # R8. Describe your projects models in terms of the relationships they have with each other
 
