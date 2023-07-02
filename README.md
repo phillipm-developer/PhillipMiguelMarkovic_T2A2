@@ -12,17 +12,15 @@ This app solves the problem of managing a childcare center by automating the adm
 
 # R2. Why is it a problem that needs solving?
 
-The childcare management system I aim to develop as a Flask Web API addresses a significant problem faced by childcare centers and parents alike. The manual management of enrollment and registration, attendance tracking, and scheduling tasks can be tedious, time-consuming, error-prone, and inefficient. By leveraging technology to automate and streamline these processes, the app aims to provide a solution that offers numerous benefits.
+The childcare management system I aim to develop as a Flask Web API addresses a significant problem faced by childcare centers and parents alike. The manual management of enrollment and registration,  can be tedious, time-consuming, error-prone, and inefficient. The chilcare management system leverages technology to automate and streamline this process.
 
-The manual handling of enrollment and registration processes used to involve extensive paperwork, which can lead to errors, delays, and difficulties in maintaining accurate records. There is also the issue of losing such records in the event of fire or security issues, with anyone being able to doctor such records.
+The manual handling of enrollment and registration processes used to involve extensive paperwork, which can lead to errors, delays, and difficulties in maintaining accurate records. There is also the issue of losing such records in the event of fire or security issues, with anyone being able to doctor such records or gain unauthorized access.
 
 By digitizing these processes and putting them online, the app eliminates paperwork, enables efficient data entry, and ensures that essential information about children, parents, guardians, emergency contacts, medical details, and authorized pickups is easily accessible and up to date.
 
-Accurate attendance tracking is crucial for childcare centers to maintain accountability, ensure child safety, and generate reports for parents and regulatory compliance. Automating this process through the app simplifies attendance recording, reduces the chances of errors or omissions, and provides real-time access to attendance data for parents and administrators.
+Without such a system, staff would not be able to track the information about guardians and their children. They would not be able to track medical information or check whether the correct person is picking up the child which would imperil the child.
 
-Scheduling and calendar management in a childcare center involves complex coordination of tasks, teachers' availability, and the needs of the children. The app's ability to assign tasks to teachers based on their availability and plan daily routines alleviates the manual effort required for scheduling, optimizes resource allocation, and ensures a well-organized and balanced routine for the children.
-
-By addressing these challenges through automation and digitization, the childcare management system brings efficiency, accuracy, and convenience to childcare centers and parents. It reduces administrative burden, improves communication, enhances child safety, and creates a smoother experience for all the actors involved. Ultimately, the app aims to streamline operations, improve productivity, and provide a better childcare experience for both childcare providers and parents.
+In addressing these problems through automation and digitization, the childcare management system brings efficiency, accuracy, and convenience to childcare centers and parents. It reduces administrative burden, improves communication, enhances child safety, and creates a smoother experience for all the users involved. 
 
 # R3. Why have you chosen this database system. What are the drawbacks
 
