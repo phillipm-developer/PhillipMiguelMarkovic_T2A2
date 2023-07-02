@@ -16,7 +16,7 @@ def all_guardians_children():
     # select * from guardians_children;
     stmt = db.select(GuardianChild).order_by(GuardianChild.id.asc())
     guardians_children = db.session.scalars(stmt).all()
-    return GuardianChildSchema(many=True).dump(guardians_children)
+    return GuardianChildSchema(many=True, exclude=['child_id', 'guardian_id', 'relationship_id', 'guardian.user.role_id']).dump(guardians_children)
 
 # Returns the guardian information for the guardian id supplied as a RESTful parameter
 @guardian_child_bp.route('/<int:guardian_child_id>', methods=['GET'])
@@ -26,7 +26,7 @@ def one_guardian_child(guardian_child_id):
     guardian = db.session.scalar(stmt)
 
     if guardian:
-        return GuardianChildSchema().dump(guardian)
+        return GuardianChildSchema(exclude=['child_id', 'guardian_id', 'relationship_id', 'guardian.user.role_id']).dump(guardian)
     else:
         return {'error': 'Guardian-child relationship not found'}, 404
 
@@ -50,15 +50,13 @@ def create_guardian_child():
         db.session.add(guardian_child)
         db.session.commit()
 
-        print('Made it here!!!')
-        # Return the new user excluding the password
-        return GuardianChildSchema(exclude=['guardian_id', 'child_id', 'relationship_id']).dump(guardian_child), 201
+        return GuardianChildSchema(exclude=['child_id', 'guardian_id', 'relationship_id', 'guardian.user.role_id']).dump(guardian_child), 201
     
     except IntegrityError:
         return {'error': 'Email address already in use'}, 409
 
 
-# Update a card
+# Update a guardian_child
 @guardian_child_bp.route('/<int:guardian_child_id>', methods=['PUT', 'PATCH'])
 @jwt_required()
 def update_guardian_child(guardian_child_id):
@@ -69,16 +67,15 @@ def update_guardian_child(guardian_child_id):
     print(guardian_child_info)
 
     if guardian_child:
-        # admin_or_owner_required(card.user.id)
         guardian_child.guardian_id = guardian_child_info.get('guardian_id', guardian_child.guardian_id)
         guardian_child.child_id = guardian_child_info.get('child_id', guardian_child.child_id)
         guardian_child.relationship_id = guardian_child_info.get('relationship_id', guardian_child.relationship_id)
         db.session.commit()
-        return GuardianChildSchema().dump(guardian_child)
+        return GuardianChildSchema(exclude=['child_id', 'guardian_id', 'relationship_id', 'guardian.user.role_id']).dump(guardian_child)
     else:
         return {'error': 'Guardian not found'}, 404
 
-# Delete a guardian
+# Delete a guardian_child
 @guardian_child_bp.route('/<int:guardian_child_id>', methods=['DELETE'])
 @jwt_required()
 def delete_guardian(guardian_child_id):

@@ -84,7 +84,7 @@ def update_user(user_id):
         user.role_id = user_info.get('role_id', user.role_id)
 
         db.session.commit()
-        return UserSchema().dump(user)
+        return UserSchema(exclude=['role_id']).dump(user)
     else:
         return {'error': f'User #{user_id} not found'}, 404
 

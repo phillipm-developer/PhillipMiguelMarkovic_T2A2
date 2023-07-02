@@ -21,7 +21,6 @@ class User(db.Model):
     guardian = db.relationship('Guardian', back_populates='user', cascade='all, delete')
 
 class UserSchema(ma.Schema):
-    # guardian = fields.Nested('GuardianSchema', only=['occupation', 'medical_info_consent', 'authorized_to_pickup'])
     role = fields.Nested('RoleSchema')
 
     first_name = fields.String(required=True, validate=And(

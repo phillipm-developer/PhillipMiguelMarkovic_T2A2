@@ -177,18 +177,24 @@ https://www.baeldung.com/cs/object-relational-mapping
 ## Enrollment and Registration:
 
 
-- POST /auth/login
+# /auth/login
 
 The childcare administrator must register a legal guardian first before they can register the children for that guardian.
 
-Request Body
+* Description: Returns a json web token in the response body if the user is on the system.
+
+* Method: POST
+
+* Authentication: jwt_required() 
+
+* Request Body
 
     { 
         "email": "jenna@spam.com",
         "password": "password123"
     }
 
-Response Body
+* Response Body
 
     {
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4ODAxMzU3MywianRpIjoiZmMyYWM3NjEtOWE2NC00OGRmLTgxODQtZGFmZGRkYzU2NTM4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Implbm5hQHNwYW0uY29tIiwibmJmIjoxNjg4MDEzNTczLCJleHAiOjE2ODgwOTk5NzN9.rxQEo_LrFxmDooWHL--MaRmSbJDiRF9yKX_6LGgp7zE",
@@ -208,15 +214,22 @@ Response Body
         }
     }
 
-Response Body: When web token fails for any other route
+* Response Body: When web token fails for any other route
 
     {
         "msg": "Signature verification failed"
     }
 
-- GET /users: Get all user records
 
-Request URI
+# /users
+
+* Description: Returns all the records for a generic user.
+
+* Method: GET
+
+* Authentication: jwt_required() 
+
+* Request URI
 
 http://localhost:5000/users
 
@@ -253,13 +266,20 @@ Response Body
         } ...
     ]
 
-- GET /users/<int: user_id>: get single user record
 
-Request URI
+# /users/<int: user_id>
 
-http://localhost:5000/users/2
+* Description: Returns single user record.
 
-Response Body
+* Method: GET
+
+* Authentication: jwt_required() 
+
+* Request URI
+
+    http://localhost:5000/users/2
+
+* Response Body
 
     {
         "date_of_birth": "1976-04-03",
@@ -276,89 +296,95 @@ Response Body
         }
     }
 
-- POST /users: Insert a new user record.
 
-Request Body
+# /users
 
-{
-	"date_of_birth": "1974-09-23",
-	"email": "paul.briggs222@tpg.com.au",
-	"password": "password123",
-	"first_name": "Paul",
-	"gender": "male",
-	"last_name": "Briggs",
-	"phone_number": "0400 561 216",
-	"role_id": 3
-}
+* Description: Create a new user record.
 
-Response Body
+* Method: POST
 
-{
-    "date_of_birth": "1974-09-23",
-    "email": "paul.briggs222@tpg.com.au",
-    "first_name": "Paul",
-    "gender": "Male",
-    "id": 8,
-    "last_name": "Briggs",
-    "password": "password123",
-    "phone_number": "0400 561 216",
-    "role": {
-        "id": 3,
-        "role_desc": "The childcare center administrator",
-        "role_name": "administrator"
-    }
-}
+* Authentication: jwt_required() 
 
-
-http://localhost:5000/users/1
-
-- POST /guardians: Insert a new parent/guardian record.
-
-Request Body
+* Request Body
 
     {
-        "authorized_to_pickup": true,
-        "medical_info_consent": true,
-        "occupation": "Delivery Driver",
-        "user": {
-            "date_of_birth": "1984-10-12",
-            "email": "joseph.parker@tpg.com.au",
-            "password": "password123",
-            "first_name": "Joseph",
-            "gender": "male",
-            "last_name": "Parker",
-            "phone_number": "0400 181 797",
-            "role_id": 1
+        "date_of_birth": "1974-09-23",
+        "email": "paul.briggs222@tpg.com.au",
+        "password": "password123",
+        "first_name": "Paul",
+        "gender": "male",
+        "last_name": "Briggs",
+        "phone_number": "0400 561 216",
+        "role_id": 3
+    }
+
+* Response Body
+
+    {
+        "date_of_birth": "1974-09-23",
+        "email": "paul.briggs222@tpg.com.au",
+        "first_name": "Paul",
+        "gender": "Male",
+        "id": 8,
+        "last_name": "Briggs",
+        "password": "password123",
+        "phone_number": "0400 561 216",
+        "role": {
+            "id": 3,
+            "role_desc": "The childcare center administrator",
+            "role_name": "administrator"
         }
     }
 
-Response Body
+# /users/<int: user_id>
+
+* Description: Update a new user record.
+
+* Method: PUT/PATCH
+
+* Authentication: jwt_required() 
+
+* Request Body
 
     {
-        "authorized_to_pickup": true,
-        "id": 4,
-        "medical_info_consent": true,
-        "occupation": "Delivery Driver",
-        "user": {
-            "date_of_birth": "1984-10-12",
-            "email": "joseph.parker@tpg.com.au",
-            "first_name": "Joseph",
-            "gender": "male",
-            "id": 6,
-            "last_name": "Parker",
-            "phone_number": "0400 181 797",
-            "role": {
-                "id": 1,
-                "role_desc": "The parent or legal guardian of the child",
-                "role_name": "guardian"
-            }
+        "date_of_birth": "1974-09-23",
+        "email": "paul.briggs222@tpg.com.au",
+        "first_name": "Paul",
+        "gender": "male",
+        "last_name": "Briggs Mcgee",
+        "phone_number": "0400 561 216",
+        "role_id": 3
+    }
+
+* Response Body
+
+    {
+        "date_of_birth": "1974-09-23",
+        "email": "paul.briggs222@tpg.com.au",
+        "first_name": "Paul",
+        "gender": "Male",
+        "id": 6,
+        "last_name": "Briggs Mcgee",
+        "password": "password123",
+        "phone_number": "0400 561 216",
+        "role": {
+            "id": 3,
+            "role_desc": "The childcare center administrator",
+            "role_name": "administrator"
         }
     }
 
+# /users
 
-- DELETE /users/<int: user_id>: Delete a child record.
+* Description: Delete a user record.
 
-Request URI
+* Method: DELETE
+
+* Authentication: jwt_required() 
+
+* Request Body
+
+* Request URI
 
 http://localhost:5000/users/1
 
@@ -368,12 +394,15 @@ Response Body
         "message": "The records for user #1 - John Davies have been deleted."
     }
 
-Rrequest URI
+# /guardians
 
-http://localhost:5000/guardians
+* Description: Retrieve all the guardians.
 
+* Method: GET
 
-GET /guardians: Retrieve all guardians.
+* Authentication: jwt_required() 
+
+* Request Body: None
 
 Response Body
 
@@ -418,35 +447,25 @@ Response Body
                 }
             }
         },
-        {
-            "authorized_to_pickup": true,
-            "id": 3,
-            "medical_info_consent": true,
-            "occupation": "Project Manager",
-            "user": {
-                "date_of_birth": "1984-11-19",
-                "email": "amy.baron@gmail.com",
-                "first_name": "Amy",
-                "gender": "female",
-                "id": 5,
-                "last_name": "Baron",
-                "phone_number": "0400 236 777",
-                "role": {
-                    "id": 1,
-                    "role_desc": "The parent or legal guardian of the child",
-                    "role_name": "guardian"
-                }
-            }
-        }
+        ...
     ]
 
-- GET /guardians/<int: guardian_id>: Retrieve information about a specific guardian.
 
-Request URI
+# /guardians/<int: guardian_id>
 
-http://localhost:5000/guardians/2
+* Description: Retrieve a single guardian.
 
-Response Body
+* Method: GET
+
+* Authentication: jwt_required() 
+
+* Request Body: None
+
+* Request URI
+
+    http://localhost:5000/guardians/2
+
+* Response Body
 
     {
         "authorized_to_pickup": true,
@@ -465,7 +484,64 @@ Response Body
         }
     }
 
-- PUT/PATCH /guardians/<int: guardian_id>: Update the details of a parent/guardian.
+# /guardians
+
+* Description: Create a single guardian.
+
+* Method: POST
+
+* Authentication: jwt_required() 
+
+* Request Body
+
+    {
+        "authorized_to_pickup": true,
+        "medical_info_consent": true,
+        "occupation": "Software Engineer",
+        "user": {
+            "date_of_birth": "1976-04-03",
+            "email": "cathy.howard@gmail.com",
+            "password": "password123",
+            "first_name": "Catherine",
+            "gender": "female",
+            "last_name": "Howard",
+            "phone_number": "0400 555 999",
+            "role_id": 2
+        }
+    }
+
+* Response Body
+
+    {
+        "authorized_to_pickup": true,
+        "id": 4,
+        "medical_info_consent": true,
+        "occupation": "Software Engineer",
+        "user": {
+            "date_of_birth": "1976-04-03",
+            "email": "cathy.howard@gmail.com",
+            "first_name": "Catherine",
+            "gender": "Female",
+            "id": 8,
+            "last_name": "Howard",
+            "phone_number": "0400 555 999",
+            "role": {
+                "id": 2,
+                "role_desc": "The primary carer of the child in the centre",
+                "role_name": "carer"
+            }
+        }
+    }
+
+# /guardians/<int: guardian_id>
+
+* Description: Update the details of a single guardian.
+
+* Method: PUT/PATCH
+
+* Authentication: jwt_required() 
+
+* Request Body
 
 Request body
 
@@ -494,9 +570,17 @@ Response Body
         }
     }
 
-- DELETE /guardians/<int: guardian_id>: Delete a parent/guardian record.
+# /guardians/<int: guardian_id>
 
-Request URI
+* Description: Delete a single guardian.
+
+* Method: DELETE
+
+* Authentication: jwt_required() 
+
+* Request Body: None
+
+* Request URI
 
 http://localhost:5000/guardians/3
 
@@ -506,36 +590,19 @@ Response Body
         "message": "The records for guardian #3 have been deleted."
     }
 
-A legal guardian can login and view information pertaining to their children.
+# /children
 
-- POST /children: Insert a new child record.
+* Description: Retrieve a single guardian.
 
-Request Body
+* Method: GET
 
-    {
-        "date_of_birth": "2020-07-11",
-        "first_name": "Michael",
-        "gender": "male",
-        "last_name": "Mosely"
-    }
+* Authentication: jwt_required() 
 
-Response Body
+* Request Body: None
 
-    {
-        "date_of_birth": "2020-07-11",
-        "emergency_contact_id": null,
-        "first_name": "Michael",
-        "gender": "male",
-        "id": 5,
-        "last_name": "Mosely",
-        "medical_info_id": null
-    }
+* Request URI
 
-- GET /children: Return all children
-
-Request URI
-
-http://localhost:5000/children
+    http://localhost:5000/children
 
 Response Body
 
@@ -560,13 +627,22 @@ Response Body
         }
     ]
 
-- GET /children/<int: child_id>: Retrieve information about a specific child.
 
-Request URI
+# /children/<int: child_id>
 
-http://localhost:5000/children/2
+* Description: Retrieve a single child.
 
-Response Body
+* Method: GET
+
+* Authentication: jwt_required() 
+
+* Request Body: None
+
+* Request URI
+
+    http://localhost:5000/children/2
+
+* Response Body
 
     {
         "date_of_birth": "2019-03-12",
@@ -578,9 +654,46 @@ Response Body
         "medical_info_id": null
     }
 
-- PUT/PATCH /children/<int: child_id>: Update the details of a child.
 
-Request Body
+# /children
+
+* Description: Create a single child.
+
+* Method: POST
+
+* Authentication: jwt_required() 
+
+* Request Body
+
+    {
+        "date_of_birth": "2020-07-11",
+        "first_name": "Michael",
+        "gender": "male",
+        "last_name": "Mosely"
+    }
+
+* Response Body
+
+    {
+        "date_of_birth": "2020-07-11",
+        "emergency_contact_id": null,
+        "first_name": "Michael",
+        "gender": "male",
+        "id": 5,
+        "last_name": "Mosely",
+        "medical_info_id": null
+    }
+
+
+# /children<int: child_id>
+
+* Description: Update a single child.
+
+* Method: PUT/PATCH
+
+* Authentication: jwt_required() 
+
+* Request Body
 
     {
         "date_of_birth": "2020-07-11",
@@ -589,7 +702,7 @@ Request Body
         "last_name": "Mosely"
     }
 
-Response Body
+* Response Body
 
     {
         "date_of_birth": "2020-07-11",
@@ -601,12 +714,15 @@ Response Body
         "medical_info_id": null
     }
 
-- DELETE /children/<int: child_id>: Delete a child record.
+# /children/<child_id>
 
+* Description: Delete a single child.
 
-Request URI
+* Method: DELETE
 
-http://localhost:5000/children/3
+* Authentication: jwt_required()
+
+* Request Body: None
 
 Response Body
 
@@ -615,13 +731,21 @@ Response Body
     }
 
 
-GET /children/<int: child_id>/medical_info
+# /children/<child_id>/medical_info
 
-Request URI
+* Description: Retrieve a single child medical information.
 
-http://localhost:5000/children/8/medical_info
+* Method: GET
 
-Response Body
+* Authentication: jwt_required()
+
+* Request Body: None
+
+* Request URI
+
+    http://localhost:5000/children/8/medical_info
+
+* Response Body
 
     {
         "date_of_birth": "2016-07-11",
@@ -640,13 +764,15 @@ Response Body
         }
     }
 
-PUT/PATCH /children/<int: child_id>/medical_info
+# /children/<child_id>/medical_info
 
-Request URI
+* Description: Update a single childs medical information.
 
-http://localhost:5000/children/7/medical_info
+* Method: PUT/PATCH
 
-Request Body
+* Authentication: jwt_required()
+
+* Request Body
 
     {
         "allergies": "dvfsdg",
@@ -656,7 +782,7 @@ Request Body
         "special_needs": "534346"
     }
 
-Response Body
+* Response Body
 
     {
         "date_of_birth": "2016-07-11",
@@ -675,14 +801,19 @@ Response Body
         }
     }
 
+# /children/<child_id>/emergency_contact
 
+* Description: Retieve a single childs emergency contact information.
 
+* Method: GET
 
-GET /children/<int: child_id>/emergency_contact
+* Authentication: jwt_required()
 
-Request URI
+* Request Body: None
 
-http://localhost:5000/children/2/emergency_contact
+* Request URI
+
+    http://localhost:5000/children/2/emergency_contact
 
     {
         "date_of_birth": "2019-03-12",
@@ -701,9 +832,15 @@ http://localhost:5000/children/2/emergency_contact
         "medical_info_id": 2
     }
 
-PUT/PATCH /children/<int: child_id>/emergency_contact
+# /children/<child_id>/emergency_contact
 
-Request Body
+* Description: Update a single childs emergency contact information.
+
+* Method: PUT/PATCH
+
+* Authentication: jwt_required()
+
+* Request Body
 
     {
         "first_name": "John",
@@ -713,7 +850,7 @@ Request Body
         "relationship": "Uncle"
     }
 
-Response Body
+* Response Body
 
     {
         "date_of_birth": "2020-07-11",
@@ -732,13 +869,21 @@ Response Body
         "medical_info_id": 1
     }
 
-GET /guardians_children: Returns the relationship that exists between guardians and their children
+# /guardians_children
 
-Request URI
+* Description: Retieve all guardian children join table data.
 
-http://localhost:5000/guardians_children
+* Method: GET
 
-Response Body
+* Authentication: jwt_required()
+
+* Request Body: None
+
+* Request URI
+
+    http://localhost:5000/guardians_children
+
+* Response Body
 
     [
         {
@@ -753,35 +898,49 @@ Response Body
                 "authorized_to_pickup": true,
                 "id": 1,
                 "medical_info_consent": true,
-                "occupation": "Delivery Driver"
+                "occupation": "Delivery Driver",
+                "user": {
+                    "date_of_birth": "1974-09-23",
+                    "email": "spam@spam.com",
+                    "first_name": "John",
+                    "gender": "male",
+                    "id": 1,
+                    "last_name": "Davies",
+                    "phone_number": "98885656",
+                    "role": {
+                        "id": 1,
+                        "role_desc": "The parent or legal guardian of the child",
+                        "role_name": "guardian"
+                    }
+                }
             },
-            "id": 1
-        },
-        {
-            "child": {
-                "date_of_birth": "2020-07-11",
-                "first_name": "Anthony",
-                "gender": "male",
+            "id": 1,
+            "relationship": {
                 "id": 1,
-                "last_name": "Punch"
-            },
-            "guardian": {
-                "authorized_to_pickup": true,
-                "id": 2,
-                "medical_info_consent": true,
-                "occupation": "Software Engineer"
-            },
-            "id": 2
-        }
+                "relationship_desc": "Parent of the child",
+                "relationship_name": "Father"
+            }
+        },
+        ...
+        ...
+        ...
     ]
 
-GET /guardians_children/2: Returns one relationship that exists between a guardian and their child
+# /guardians_children/<int: guardians_children_id>
 
-Request URI
+* Description: Retieve a single guardian child entity.
 
-http://localhost:5000/guardians_children/2
+* Method: GET
 
-Response Body
+* Authentication: jwt_required()
+
+* Request Body: None
+
+* Request URI
+
+    http://localhost:5000/guardians_children/1
+
+* Response Body
 
     {
         "child": {
@@ -793,21 +952,102 @@ Response Body
         },
         "guardian": {
             "authorized_to_pickup": true,
-            "id": 2,
+            "id": 1,
             "medical_info_consent": true,
-            "occupation": "Software Engineer"
+            "occupation": "Delivery Driver",
+            "user": {
+                "date_of_birth": "1974-09-23",
+                "email": "spam@spam.com",
+                "first_name": "John",
+                "gender": "male",
+                "id": 1,
+                "last_name": "Davies",
+                "phone_number": "98885656",
+                "role": {
+                    "id": 1,
+                    "role_desc": "The parent or legal guardian of the child",
+                    "role_name": "guardian"
+                }
+            }
         },
-        "id": 2
+        "id": 1,
+        "relationship": {
+            "id": 1,
+            "relationship_desc": "Parent of the child",
+            "relationship_name": "Father"
+        }
     }
 
-POST /guardians_children
+# /guardians_children
+
+* Description: Create a single guardian child.
+
+* Method: POST
+
+* Authentication: jwt_required()
+
+* Request Body
+
+    {
+        "guardian_id": 1,
+        "child_id": 3, 
+        "relationship_id": 1
+    }
+
+* Response Body
+
+    {
+        "child": {
+            "date_of_birth": "2019-10-16",
+            "first_name": "Maisie",
+            "gender": "female",
+            "id": 3,
+            "last_name": "Jones"
+        },
+        "guardian": {
+            "authorized_to_pickup": true,
+            "id": 1,
+            "medical_info_consent": true,
+            "occupation": "Delivery Driver",
+            "user": {
+                "date_of_birth": "1974-09-23",
+                "email": "spam@spam.com",
+                "first_name": "John",
+                "gender": "male",
+                "id": 1,
+                "last_name": "Davies",
+                "phone_number": "98885656",
+                "role": {
+                    "id": 1,
+                    "role_desc": "The parent or legal guardian of the child",
+                    "role_name": "guardian"
+                }
+            }
+        },
+        "id": 5,
+        "relationship": {
+            "id": 1,
+            "relationship_desc": "Parent of the child",
+            "relationship_name": "Father"
+        }
+    }
+
+# /guardians_children/<int: guardians_children_id>
+
+* Description: Update a single guardian child.
+
+* Method: PUT/PATCH
+
+* Authentication: jwt_required()
+
+* Request Body
 
 Request Body
 
     {
         "guardian_id": 1,
         "child_id": 3, 
-        "relationship_id": 1
+        "relationship_id": 2
     }
 
 Response Body
@@ -837,92 +1077,36 @@ Response Body
                     "id": 1,
                     "role_desc": "The parent or legal guardian of the child",
                     "role_name": "guardian"
-                },
-                "role_id": 1
+                }
             }
         },
-        "id": 5,
+        "id": 1,
         "relationship": {
-            "id": 1,
+            "id": 2,
             "relationship_desc": "Parent of the child",
-            "relationship_name": "Father"
+            "relationship_name": "Mother"
         }
     }
 
-PUT/PATCH /guardians_children/<int: guardians_children_id>: Update a single guardian-child relationship.
+# /guardians_children/<int: guardians_children_id>
 
-Request Body
+* Description: Update a single guardian child.
 
-    {
-        "guardian_id": 1,
-        "child_id": 3, 
-        "relationship_id": 2
-    }
+* Method: DELETE
 
-Response Body
+* Authentication: jwt_required()
 
-    {
-        "child": {
-            "date_of_birth": "2019-10-16",
-            "first_name": "Maisie",
-            "gender": "female",
-            "id": 3,
-            "last_name": "Jones"
-        },
-        "child_id": 3,
-        "guardian": {
-            "authorized_to_pickup": true,
-            "id": 1,
-            "medical_info_consent": true,
-            "occupation": "Delivery Driver"
-        },
-        "guardian_id": 1,
-        "id": 5,
-        "relationship_id": 2
-    }
+* Request Body: NONE
 
-DELETE /guardians_children/<int: guardians_children_id> : Delete a single guardian-child relationship.
-
-Request URI
+* Request URI
 
 http://localhost:5000/guardians_children/5
 
-Response Body
+* Response Body
 
     {
         "message": "The records for guardian-child relationship #5 have been deleted."
     }
-
-
-- POST /authorized-pickups: Insert a new authorized pickup record.
-- GET /authorized-pickups/<int: pickup_id>: Retrieve information about a specific authorized pickup.
-- PUT /authorized-pickups/<int: pickup_id>: Update the details of an authorized pickup.
-- DELETE /authorized-pickups/<int: pickup_id>: Delete an authorized pickup record.
-
-- POST /medical-information: Insert a new medical information record.
-- GET /medical-information/<int: info_id>: Retrieve information about a specific medical information record.
-- PUT /medical-information/<int: info_id>: Update the details of a medical information record.
-- DELETE /medical-information/<int: info_id>: Delete a medical information record.
-
-- POST /emergency-contacts: Insert a new emergency contact record.
-- GET /emergency-contacts/<int: contact_id>: Retrieve information about a specific emergency contact.
-- PUT /emergency-contacts/<int: contact_id>: Update the details of an emergency contact.
-- DELETE /emergency-contacts/<int: contact_id>: Delete an emergency contact record.
-
-
-## Attendance Tracking:
-- POST /attendance: Record the arrival and departure times of a child.
-- GET /attendance: Retrieve attendance records of all children.
-- GET /attendance/<int: attendance_id>: Retrieve attendance records for a specific child.
-- PUT /attendance/<int: attendance_id>: Update the attendance record of a child.
-- DELETE /attendance/<int: attendance_id>: Delete an attendance record.
-
-## Scheduling and Calendar Management:
-
-- POST /schedule: Assign a task to a teacher/carer based on their availability and the schedule.
-- GET /schedule/<int: schedule_id>: Retrieve information about a specific task.
-- PUT /schedule/<int: schedule_id>: Update the details of a task.
-- DELETE /schedule/<int: schedule_id>: Delete a task.
 
 # R6. An ERD for your app
 
@@ -966,16 +1150,21 @@ By utilizing these third-party services, the childcare management system Flask W
 
 ## Sources
 
-https://www.sqlalchemy.org/
+SQLAlchemy, 'The Python SQL Toolkit and Object Relational Mapper', accessed 26 June 2023, https://www.sqlalchemy.org/
 
+flask-marshmallow, 'Flask + marshmallow for beautiful APIs', accessed 26 June 2023
 https://flask-marshmallow.readthedocs.io/en/latest/
 
+Radecic D. 2023, 'Python Dotenv: How To Manage Environment Variables in Python', accessed 26 June 2023, 
 https://betterdatascience.com/python-dotenv/
 
+Di Gregorio F. 2021, 'Psycopg – PostgreSQL database adapter for Python', accessed 26 June 2023, 
 https://www.psycopg.org/docs/
 
+flask-bcrypt.readthedocs, 'Flask-Bcrypt', accessed 26 June 2023, 
 https://flask-bcrypt.readthedocs.io/en/1.0.1/
 
+4Geeks Academy, 'UNDERSTANDING JWT AND HOW TO IMPLEMENT A SIMPLE JWT WITH FLASK', accessed 26 June 2023, 
 https://4geeks.com/lesson/what-is-JWT-and-how-to-implement-with-Flask
 
 # R8. Describe your projects models in terms of the relationships they have with each other
