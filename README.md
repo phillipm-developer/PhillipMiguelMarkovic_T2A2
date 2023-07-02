@@ -70,25 +70,48 @@ https://www.geeksforgeeks.org/acid-properties-in-dbms/
 
 An ORM (Object Relational Mapper) is a software tool that enables developers to interact with a relational database using object-oriented programming (OOP) concepts. It acts as a bridge between the application's object model and the database, abstracting away the underlying database-specific operations and allowing developers to work with database entities as objects in their code.
 
-Key Functionalities of an ORM:
+In the context of a childcare management system implemented as a Flask Web API, an ORM (Object Relational Mapper) plays a crucial role in simplifying database operations and enhancing the overall functionality of the system. The key functionalities and benefits of an ORM in relation to a childcare management syhstem are outlined below.
 
-* Object-Relational Mapping: The ORM maps database tables to object classes and provides mechanisms to perform CRUD (Create, Read, Update, Delete) operations on those objects. It handles the conversion between object-oriented code and relational database structures.
+## Key Functionalities
 
-* Data Modeling: An ORM facilitates the creation of object-oriented models that represent the database schema. It allows developers to define relationships between objects, such as one-to-one, one-to-many, or many-to-many associations, and handles the translation of these relationships to relational database concepts.
+### Object-Relational Mapping
 
-* Query Generation and Optimization: An ORM provides a query language or API to interact with the database. It generates SQL queries based on high-level object-oriented operations and optimizes those queries for performance. This helps developers write database queries using familiar programming paradigms without worrying about the underlying SQL syntax or query optimization.
+The ORM maps the essential entities in the childcare management system, such as children, parents & guardians, emergency contacts, medical information to object-oriented models or classes. It allows developers to work with these entities as objects in their code without needing to deal with the complexities of interacting with the relational database directly. The developer doesn't really need to worry about SQL statements.
 
-Benefits of Using an ORM:
+### CRUD Operations
 
-* Productivity and Maintainability: By abstracting away the low-level database operations, an ORM simplifies the development process, reduces the amount of boilerplate code, and enhances code reusability. It allows developers to focus on the business logic of the application rather than database-specific details, improving productivity and maintainability.
+The ORM provides mechanisms to perform CRUD (Create, Read, Update, Delete) operations on the childcare-related entities. It handles the translation between object-oriented operations and the corresponding database queries, ensuring data persistence, retrieval, modification and deletion of records.
 
-* Portability and Database Independence: An ORM provides a database-agnostic interface, allowing developers to switch between different database systems (such as PostgreSQL, MySQL, SQLite) without rewriting the application code. This promotes flexibility and portability, enabling the application to be deployed on different environments easily.
+### Data Relationships and Associations
 
-* Security and Performance: Many ORMs incorporate security measures such as parameterized queries or query sanitization to prevent SQL injection attacks. They also offer query optimization techniques to improve performance by minimizing the number of database calls and optimizing data retrieval strategies.
+An ORM allows developers to define and manage relationships and associations between different entities. For example, it facilitates establishing the relationship between a child and their parents/guardians or linking a child to their medical information. This simplifies data modeling and ensures data integrity within the childcare management system.
 
-* Abstraction of Complex Database Operations: ORMs handle complex database operations, such as joining tables, managing transactions, and handling concurrency issues, in a more abstract and intuitive manner. This simplifies the implementation of advanced database functionalities within the application.
+### Query Generation and Optimization
 
-Overall, an ORM simplifies database interactions, improves code organization, enhances productivity, and promotes maintainability and portability. It bridges the gap between object-oriented programming and relational databases, allowing developers to work with database entities as familiar objects and perform database operations using high-level, object-oriented constructs.
+The ORM generates the appropriate SQL queries based on high-level object-oriented operations, such as filtering, sorting, or aggregating data. It optimizes these queries to improve performance and minimize the number of database calls. This ensures efficient data retrieval for tasks like attendance tracking or generating schedules based on teacher availability.
+
+## Benefits of Using an ORM in the Childcare Management System
+
+### Development is Simplified
+
+An ORM allows developers to concentrate on the applications business logic as it abstracts away the complexities of database database interactions. Development speed is increased as the amount of databse related code is reduced. This also improves code maintanability.
+
+### Portability and Flexibility Between Database Products
+
+By using an ORM, the childcare management system can be developed to work with different relational databases (such as PostgreSQL, MySQL, SQLite) without significant code modifications. This enhances the system's portability and provides flexibility in choosing the appropriate database system based on specific requirements.
+
+### Integrity and Consistency of Database
+
+The ORM handles database transactions and ensures data integrity by enforcing relationships, constraints, and validations defined in the object models. It helps maintain consistent and accurate records of children, parents/guardians, emergency contacts, and other associated entities.
+
+### Performance and Security
+
+The ORM incorporates query optimization techniques, such as caching, lazy loading, and efficient data fetching strategies, to enhance the performance of database operations. Additionally, it offers built-in security measures like parameterized queries to protect against SQL injection attacks.
+
+## Sources
+
+Baeldung, 'What Is an ORM? How Does It Work? How Should We Use One?', accessed June 30 2023, 
+https://www.baeldung.com/cs/object-relational-mapping
 
 # R5. Document all endpoints for your API
 
