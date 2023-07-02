@@ -189,36 +189,36 @@ The childcare administrator must register a legal guardian first before they can
 
 * Request Body
 
-    { 
-        "email": "jenna@spam.com",
-        "password": "password123"
-    }
+        { 
+            "email": "jenna@spam.com",
+            "password": "password123"
+        }
 
 * Response Body
 
-    {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4ODAxMzU3MywianRpIjoiZmMyYWM3NjEtOWE2NC00OGRmLTgxODQtZGFmZGRkYzU2NTM4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Implbm5hQHNwYW0uY29tIiwibmJmIjoxNjg4MDEzNTczLCJleHAiOjE2ODgwOTk5NzN9.rxQEo_LrFxmDooWHL--MaRmSbJDiRF9yKX_6LGgp7zE",
-        "user": {
-            "date_of_birth": "1969-02-14",
-            "email": "jenna@spam.com",
-            "first_name": "Jenna",
-            "gender": "female",
-            "id": 4,
-            "last_name": "Walters",
-            "phone_number": "0401548899",
-            "role": {
-                "id": 3,
-                "role_desc": "The childcare center administrator",
-                "role_name": "administrator"
+        {
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4ODAxMzU3MywianRpIjoiZmMyYWM3NjEtOWE2NC00OGRmLTgxODQtZGFmZGRkYzU2NTM4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Implbm5hQHNwYW0uY29tIiwibmJmIjoxNjg4MDEzNTczLCJleHAiOjE2ODgwOTk5NzN9.rxQEo_LrFxmDooWHL--MaRmSbJDiRF9yKX_6LGgp7zE",
+            "user": {
+                "date_of_birth": "1969-02-14",
+                "email": "jenna@spam.com",
+                "first_name": "Jenna",
+                "gender": "female",
+                "id": 4,
+                "last_name": "Walters",
+                "phone_number": "0401548899",
+                "role": {
+                    "id": 3,
+                    "role_desc": "The childcare center administrator",
+                    "role_name": "administrator"
+                }
             }
         }
-    }
 
 * Response Body: When web token fails for any other route
 
-    {
-        "msg": "Signature verification failed"
-    }
+        {
+            "msg": "Signature verification failed"
+        }
 
 
 # /users
@@ -233,23 +233,54 @@ The childcare administrator must register a legal guardian first before they can
 
 http://localhost:5000/users
 
-Response Body
+* Response Body
 
-    [
-        {
-            "date_of_birth": "1974-09-23",
-            "email": "spam@spam.com",
-            "first_name": "John",
-            "gender": "male",
-            "id": 1,
-            "last_name": "Davies",
-            "phone_number": "98885656",
-            "role": {
+        [
+            {
+                "date_of_birth": "1974-09-23",
+                "email": "spam@spam.com",
+                "first_name": "John",
+                "gender": "male",
                 "id": 1,
-                "role_desc": "The parent or legal guardian of the child",
-                "role_name": "guardian"
-            }
-        },
+                "last_name": "Davies",
+                "phone_number": "98885656",
+                "role": {
+                    "id": 1,
+                    "role_desc": "The parent or legal guardian of the child",
+                    "role_name": "guardian"
+                }
+            },
+            {
+                "date_of_birth": "1976-04-03",
+                "email": "tomato@spam.com",
+                "first_name": "Joan",
+                "gender": "female",
+                "id": 2,
+                "last_name": "Davies",
+                "phone_number": "98885656",
+                "role": {
+                    "id": 1,
+                    "role_desc": "The parent or legal guardian of the child",
+                    "role_name": "guardian"
+                }
+            } ...
+        ]
+
+
+# /users/<int: user_id>
+
+* Description: Returns single user record.
+
+* Method: GET
+
+* Authentication: jwt_required() 
+
+* Request URI
+
+        http://localhost:5000/users/2
+
+* Response Body
+
         {
             "date_of_birth": "1976-04-03",
             "email": "tomato@spam.com",
@@ -263,38 +294,7 @@ Response Body
                 "role_desc": "The parent or legal guardian of the child",
                 "role_name": "guardian"
             }
-        } ...
-    ]
-
-
-# /users/<int: user_id>
-
-* Description: Returns single user record.
-
-* Method: GET
-
-* Authentication: jwt_required() 
-
-* Request URI
-
-    http://localhost:5000/users/2
-
-* Response Body
-
-    {
-        "date_of_birth": "1976-04-03",
-        "email": "tomato@spam.com",
-        "first_name": "Joan",
-        "gender": "female",
-        "id": 2,
-        "last_name": "Davies",
-        "phone_number": "98885656",
-        "role": {
-            "id": 1,
-            "role_desc": "The parent or legal guardian of the child",
-            "role_name": "guardian"
         }
-    }
 
 
 # /users
@@ -307,34 +307,34 @@ Response Body
 
 * Request Body
 
-    {
-        "date_of_birth": "1974-09-23",
-        "email": "paul.briggs222@tpg.com.au",
-        "password": "password123",
-        "first_name": "Paul",
-        "gender": "male",
-        "last_name": "Briggs",
-        "phone_number": "0400 561 216",
-        "role_id": 3
-    }
+        {
+            "date_of_birth": "1974-09-23",
+            "email": "paul.briggs222@tpg.com.au",
+            "password": "password123",
+            "first_name": "Paul",
+            "gender": "male",
+            "last_name": "Briggs",
+            "phone_number": "0400 561 216",
+            "role_id": 3
+        }
 
 * Response Body
 
-    {
-        "date_of_birth": "1974-09-23",
-        "email": "paul.briggs222@tpg.com.au",
-        "first_name": "Paul",
-        "gender": "Male",
-        "id": 8,
-        "last_name": "Briggs",
-        "password": "password123",
-        "phone_number": "0400 561 216",
-        "role": {
-            "id": 3,
-            "role_desc": "The childcare center administrator",
-            "role_name": "administrator"
+        {
+            "date_of_birth": "1974-09-23",
+            "email": "paul.briggs222@tpg.com.au",
+            "first_name": "Paul",
+            "gender": "Male",
+            "id": 8,
+            "last_name": "Briggs",
+            "password": "password123",
+            "phone_number": "0400 561 216",
+            "role": {
+                "id": 3,
+                "role_desc": "The childcare center administrator",
+                "role_name": "administrator"
+            }
         }
-    }
 
 # /users/<int: user_id>
 
@@ -346,33 +346,33 @@ Response Body
 
 * Request Body
 
-    {
-        "date_of_birth": "1974-09-23",
-        "email": "paul.briggs222@tpg.com.au",
-        "first_name": "Paul",
-        "gender": "male",
-        "last_name": "Briggs Mcgee",
-        "phone_number": "0400 561 216",
-        "role_id": 3
-    }
+        {
+            "date_of_birth": "1974-09-23",
+            "email": "paul.briggs222@tpg.com.au",
+            "first_name": "Paul",
+            "gender": "male",
+            "last_name": "Briggs Mcgee",
+            "phone_number": "0400 561 216",
+            "role_id": 3
+        }
 
 * Response Body
 
-    {
-        "date_of_birth": "1974-09-23",
-        "email": "paul.briggs222@tpg.com.au",
-        "first_name": "Paul",
-        "gender": "Male",
-        "id": 6,
-        "last_name": "Briggs Mcgee",
-        "password": "password123",
-        "phone_number": "0400 561 216",
-        "role": {
-            "id": 3,
-            "role_desc": "The childcare center administrator",
-            "role_name": "administrator"
+        {
+            "date_of_birth": "1974-09-23",
+            "email": "paul.briggs222@tpg.com.au",
+            "first_name": "Paul",
+            "gender": "Male",
+            "id": 6,
+            "last_name": "Briggs Mcgee",
+            "password": "password123",
+            "phone_number": "0400 561 216",
+            "role": {
+                "id": 3,
+                "role_desc": "The childcare center administrator",
+                "role_name": "administrator"
+            }
         }
-    }
 
 # /users
 
@@ -388,11 +388,11 @@ Response Body
 
 http://localhost:5000/users/1
 
-Response Body
+* Response Body
 
-    {
-        "message": "The records for user #1 - John Davies have been deleted."
-    }
+        {
+            "message": "The records for user #1 - John Davies have been deleted."
+        }
 
 # /guardians
 
@@ -404,29 +404,69 @@ Response Body
 
 * Request Body: None
 
-Response Body
+* Response Body
 
-    [
-        {
-            "authorized_to_pickup": true,
-            "id": 1,
-            "medical_info_consent": true,
-            "occupation": "Delivery Driver",
-            "user": {
-                "date_of_birth": "1974-09-23",
-                "email": "spam@spam.com",
-                "first_name": "John",
-                "gender": "male",
+        [
+            {
+                "authorized_to_pickup": true,
                 "id": 1,
-                "last_name": "Davies",
-                "phone_number": "98885656",
-                "role": {
+                "medical_info_consent": true,
+                "occupation": "Delivery Driver",
+                "user": {
+                    "date_of_birth": "1974-09-23",
+                    "email": "spam@spam.com",
+                    "first_name": "John",
+                    "gender": "male",
                     "id": 1,
-                    "role_desc": "The parent or legal guardian of the child",
-                    "role_name": "guardian"
+                    "last_name": "Davies",
+                    "phone_number": "98885656",
+                    "role": {
+                        "id": 1,
+                        "role_desc": "The parent or legal guardian of the child",
+                        "role_name": "guardian"
+                    }
                 }
-            }
-        },
+            },
+            {
+                "authorized_to_pickup": true,
+                "id": 2,
+                "medical_info_consent": true,
+                "occupation": "Software Engineer",
+                "user": {
+                    "date_of_birth": "1976-04-03",
+                    "email": "tomato@spam.com",
+                    "first_name": "Joan",
+                    "gender": "female",
+                    "id": 2,
+                    "last_name": "Davies",
+                    "phone_number": "98885656",
+                    "role": {
+                        "id": 1,
+                        "role_desc": "The parent or legal guardian of the child",
+                        "role_name": "guardian"
+                    }
+                }
+            },
+            ...
+        ]
+
+
+# /guardians/<int: guardian_id>
+
+* Description: Retrieve a single guardian.
+
+* Method: GET
+
+* Authentication: jwt_required() 
+
+* Request Body: None
+
+* Request URI
+
+        http://localhost:5000/guardians/2
+
+* Response Body
+
         {
             "authorized_to_pickup": true,
             "id": 2,
@@ -440,49 +480,9 @@ Response Body
                 "id": 2,
                 "last_name": "Davies",
                 "phone_number": "98885656",
-                "role": {
-                    "id": 1,
-                    "role_desc": "The parent or legal guardian of the child",
-                    "role_name": "guardian"
-                }
+                "role_id": 1
             }
-        },
-        ...
-    ]
-
-
-# /guardians/<int: guardian_id>
-
-* Description: Retrieve a single guardian.
-
-* Method: GET
-
-* Authentication: jwt_required() 
-
-* Request Body: None
-
-* Request URI
-
-    http://localhost:5000/guardians/2
-
-* Response Body
-
-    {
-        "authorized_to_pickup": true,
-        "id": 2,
-        "medical_info_consent": true,
-        "occupation": "Software Engineer",
-        "user": {
-            "date_of_birth": "1976-04-03",
-            "email": "tomato@spam.com",
-            "first_name": "Joan",
-            "gender": "female",
-            "id": 2,
-            "last_name": "Davies",
-            "phone_number": "98885656",
-            "role_id": 1
         }
-    }
 
 # /guardians
 
@@ -494,44 +494,44 @@ Response Body
 
 * Request Body
 
-    {
-        "authorized_to_pickup": true,
-        "medical_info_consent": true,
-        "occupation": "Software Engineer",
-        "user": {
-            "date_of_birth": "1976-04-03",
-            "email": "cathy.howard@gmail.com",
-            "password": "password123",
-            "first_name": "Catherine",
-            "gender": "female",
-            "last_name": "Howard",
-            "phone_number": "0400 555 999",
-            "role_id": 2
+        {
+            "authorized_to_pickup": true,
+            "medical_info_consent": true,
+            "occupation": "Software Engineer",
+            "user": {
+                "date_of_birth": "1976-04-03",
+                "email": "cathy.howard@gmail.com",
+                "password": "password123",
+                "first_name": "Catherine",
+                "gender": "female",
+                "last_name": "Howard",
+                "phone_number": "0400 555 999",
+                "role_id": 2
+            }
         }
-    }
 
 * Response Body
 
-    {
-        "authorized_to_pickup": true,
-        "id": 4,
-        "medical_info_consent": true,
-        "occupation": "Software Engineer",
-        "user": {
-            "date_of_birth": "1976-04-03",
-            "email": "cathy.howard@gmail.com",
-            "first_name": "Catherine",
-            "gender": "Female",
-            "id": 8,
-            "last_name": "Howard",
-            "phone_number": "0400 555 999",
-            "role": {
-                "id": 2,
-                "role_desc": "The primary carer of the child in the centre",
-                "role_name": "carer"
+        {
+            "authorized_to_pickup": true,
+            "id": 4,
+            "medical_info_consent": true,
+            "occupation": "Software Engineer",
+            "user": {
+                "date_of_birth": "1976-04-03",
+                "email": "cathy.howard@gmail.com",
+                "first_name": "Catherine",
+                "gender": "Female",
+                "id": 8,
+                "last_name": "Howard",
+                "phone_number": "0400 555 999",
+                "role": {
+                    "id": 2,
+                    "role_desc": "The primary carer of the child in the centre",
+                    "role_name": "carer"
+                }
             }
         }
-    }
 
 # /guardians/<int: guardian_id>
 
@@ -543,32 +543,32 @@ Response Body
 
 * Request Body
 
-Request body
+* Request body
 
-    {
-        "authorized_to_pickup": false,
-        "medical_info_consent": true,
-        "occupation": "Plumber"
-    }
-
-Response Body
-
-    {
-        "authorized_to_pickup": false,
-        "id": 1,
-        "medical_info_consent": true,
-        "occupation": "Plumber",
-        "user": {
-            "date_of_birth": "1974-09-23",
-            "email": "spam@spam.com",
-            "first_name": "John",
-            "gender": "male",
-            "id": 1,
-            "last_name": "Davies",
-            "phone_number": "98885656",
-            "role_id": 1
+        {
+            "authorized_to_pickup": false,
+            "medical_info_consent": true,
+            "occupation": "Plumber"
         }
-    }
+
+* Response Body
+
+        {
+            "authorized_to_pickup": false,
+            "id": 1,
+            "medical_info_consent": true,
+            "occupation": "Plumber",
+            "user": {
+                "date_of_birth": "1974-09-23",
+                "email": "spam@spam.com",
+                "first_name": "John",
+                "gender": "male",
+                "id": 1,
+                "last_name": "Davies",
+                "phone_number": "98885656",
+                "role_id": 1
+            }
+        }
 
 # /guardians/<int: guardian_id>
 
@@ -582,13 +582,13 @@ Response Body
 
 * Request URI
 
-http://localhost:5000/guardians/3
+        http://localhost:5000/guardians/3
 
-Response Body
+*Response Body
 
-    {
-        "message": "The records for guardian #3 have been deleted."
-    }
+        {
+            "message": "The records for guardian #3 have been deleted."
+        }
 
 # /children
 
@@ -602,30 +602,30 @@ Response Body
 
 * Request URI
 
-    http://localhost:5000/children
+        http://localhost:5000/children
 
 Response Body
 
-    [
-        {
-            "date_of_birth": "2020-07-11",
-            "emergency_contact_id": null,
-            "first_name": "Anthony",
-            "gender": "male",
-            "id": 1,
-            "last_name": "Punch",
-            "medical_info_id": null
-        },
-        {
-            "date_of_birth": "2019-03-12",
-            "emergency_contact_id": null,
-            "first_name": "Cloe",
-            "gender": "female",
-            "id": 2,
-            "last_name": "Punch",
-            "medical_info_id": null
-        }
-    ]
+        [
+            {
+                "date_of_birth": "2020-07-11",
+                "emergency_contact_id": null,
+                "first_name": "Anthony",
+                "gender": "male",
+                "id": 1,
+                "last_name": "Punch",
+                "medical_info_id": null
+            },
+            {
+                "date_of_birth": "2019-03-12",
+                "emergency_contact_id": null,
+                "first_name": "Cloe",
+                "gender": "female",
+                "id": 2,
+                "last_name": "Punch",
+                "medical_info_id": null
+            }
+        ]
 
 
 # /children/<int: child_id>
@@ -640,19 +640,19 @@ Response Body
 
 * Request URI
 
-    http://localhost:5000/children/2
+        http://localhost:5000/children/2
 
 * Response Body
 
-    {
-        "date_of_birth": "2019-03-12",
-        "emergency_contact_id": null,
-        "first_name": "Cloe",
-        "gender": "female",
-        "id": 2,
-        "last_name": "Punch",
-        "medical_info_id": null
-    }
+        {
+            "date_of_birth": "2019-03-12",
+            "emergency_contact_id": null,
+            "first_name": "Cloe",
+            "gender": "female",
+            "id": 2,
+            "last_name": "Punch",
+            "medical_info_id": null
+        }
 
 
 # /children
@@ -665,25 +665,24 @@ Response Body
 
 * Request Body
 
-    {
-        "date_of_birth": "2020-07-11",
-        "first_name": "Michael",
-        "gender": "male",
-        "last_name": "Mosely"
-    }
+        {
+            "date_of_birth": "2020-07-11",
+            "first_name": "Michael",
+            "gender": "male",
+            "last_name": "Mosely"
+        }
 
 * Response Body
 
-    {
-        "date_of_birth": "2020-07-11",
-        "emergency_contact_id": null,
-        "first_name": "Michael",
-        "gender": "male",
-        "id": 5,
-        "last_name": "Mosely",
-        "medical_info_id": null
-    }
-
+        {
+            "date_of_birth": "2020-07-11",
+            "emergency_contact_id": null,
+            "first_name": "Michael",
+            "gender": "male",
+            "id": 5,
+            "last_name": "Mosely",
+            "medical_info_id": null
+        }
 
 # /children<int: child_id>
 
@@ -695,24 +694,24 @@ Response Body
 
 * Request Body
 
-    {
-        "date_of_birth": "2020-07-11",
-        "first_name": "Michael Jake",
-        "gender": "male",
-        "last_name": "Mosely"
-    }
+        {
+            "date_of_birth": "2020-07-11",
+            "first_name": "Michael Jake",
+            "gender": "male",
+            "last_name": "Mosely"
+        }
 
 * Response Body
 
-    {
-        "date_of_birth": "2020-07-11",
-        "emergency_contact_id": null,
-        "first_name": "Michael Jake",
-        "gender": "male",
-        "id": 3,
-        "last_name": "Mosely",
-        "medical_info_id": null
-    }
+        {
+            "date_of_birth": "2020-07-11",
+            "emergency_contact_id": null,
+            "first_name": "Michael Jake",
+            "gender": "male",
+            "id": 3,
+            "last_name": "Mosely",
+            "medical_info_id": null
+        }
 
 # /children/<int: child_id>
 
@@ -724,11 +723,11 @@ Response Body
 
 * Request Body: None
 
-Response Body
+* Response Body
 
-    {
-        "message": "The records for child #3 have been deleted."
-    }
+        {
+            "message": "The records for child #3 have been deleted."
+        }
 
 
 # /children/<int: child_id>/medical_info
@@ -743,26 +742,26 @@ Response Body
 
 * Request URI
 
-    http://localhost:5000/children/8/medical_info
+        http://localhost:5000/children/8/medical_info
 
 * Response Body
 
-    {
-        "date_of_birth": "2016-07-11",
-        "emergency_contact_id": null,
-        "first_name": "Michael",
-        "gender": "Male",
-        "id": 8,
-        "last_name": "Mosely",
-        "medical_info": {
-            "allergies": "",
-            "dietary_restrictions": "",
+        {
+            "date_of_birth": "2016-07-11",
+            "emergency_contact_id": null,
+            "first_name": "Michael",
+            "gender": "Male",
             "id": 8,
-            "medications": "",
-            "notes": "",
-            "special_needs": ""
+            "last_name": "Mosely",
+            "medical_info": {
+                "allergies": "",
+                "dietary_restrictions": "",
+                "id": 8,
+                "medications": "",
+                "notes": "",
+                "special_needs": ""
+            }
         }
-    }
 
 # /children/<int: child_id>/medical_info
 
@@ -774,32 +773,32 @@ Response Body
 
 * Request Body
 
-    {
-        "allergies": "dvfsdg",
-        "dietary_restrictions": "fgdfg",
-        "medications": "dfgdsg",
-        "notes": "dfgdfd",
-        "special_needs": "534346"
-    }
-
-* Response Body
-
-    {
-        "date_of_birth": "2016-07-11",
-        "emergency_contact_id": null,
-        "first_name": "Michael",
-        "gender": "Male",
-        "id": 7,
-        "last_name": "Mosely",
-        "medical_info": {
+        {
             "allergies": "dvfsdg",
             "dietary_restrictions": "fgdfg",
-            "id": 7,
             "medications": "dfgdsg",
             "notes": "dfgdfd",
             "special_needs": "534346"
         }
-    }
+
+* Response Body
+
+        {
+            "date_of_birth": "2016-07-11",
+            "emergency_contact_id": null,
+            "first_name": "Michael",
+            "gender": "Male",
+            "id": 7,
+            "last_name": "Mosely",
+            "medical_info": {
+                "allergies": "dvfsdg",
+                "dietary_restrictions": "fgdfg",
+                "id": 7,
+                "medications": "dfgdsg",
+                "notes": "dfgdfd",
+                "special_needs": "534346"
+            }
+        }
 
 # /children/<int: child_id>/emergency_contact
 
@@ -815,22 +814,24 @@ Response Body
 
     http://localhost:5000/children/2/emergency_contact
 
-    {
-        "date_of_birth": "2019-03-12",
-        "emergency_contact": {
-            "first_name": "John",
+* Response Body    
+
+        {
+            "date_of_birth": "2019-03-12",
+            "emergency_contact": {
+                "first_name": "John",
+                "id": 2,
+                "last_name": "Mecina",
+                "notes": "Just some random text ...",
+                "phone_number": "0401 856 715",
+                "relationship": "Uncle"
+            },
+            "first_name": "Cloe",
+            "gender": "female",
             "id": 2,
-            "last_name": "Mecina",
-            "notes": "Just some random text ...",
-            "phone_number": "0401 856 715",
-            "relationship": "Uncle"
-        },
-        "first_name": "Cloe",
-        "gender": "female",
-        "id": 2,
-        "last_name": "Punch",
-        "medical_info_id": 2
-    }
+            "last_name": "Punch",
+            "medical_info_id": 2
+        }
 
 # /children/<int: child_id>/emergency_contact
 
@@ -842,32 +843,32 @@ Response Body
 
 * Request Body
 
-    {
-        "first_name": "John",
-        "last_name": "Mecina",
-        "notes": "Just some random text ...",
-        "phone_number": "0401 856 715",
-        "relationship": "Uncle"
-    }
-
-* Response Body
-
-    {
-        "date_of_birth": "2020-07-11",
-        "emergency_contact": {
+        {
             "first_name": "John",
-            "id": 1,
             "last_name": "Mecina",
             "notes": "Just some random text ...",
             "phone_number": "0401 856 715",
             "relationship": "Uncle"
-        },
-        "first_name": "Anthony",
-        "gender": "male",
-        "id": 1,
-        "last_name": "Punch",
-        "medical_info_id": 1
-    }
+        }
+
+* Response Body
+
+        {
+            "date_of_birth": "2020-07-11",
+            "emergency_contact": {
+                "first_name": "John",
+                "id": 1,
+                "last_name": "Mecina",
+                "notes": "Just some random text ...",
+                "phone_number": "0401 856 715",
+                "relationship": "Uncle"
+            },
+            "first_name": "Anthony",
+            "gender": "male",
+            "id": 1,
+            "last_name": "Punch",
+            "medical_info_id": 1
+        }
 
 # /guardians_children
 
@@ -881,11 +882,67 @@ Response Body
 
 * Request URI
 
-    http://localhost:5000/guardians_children
+        http://localhost:5000/guardians_children
 
 * Response Body
 
-    [
+        [
+            {
+                "child": {
+                    "date_of_birth": "2020-07-11",
+                    "first_name": "Anthony",
+                    "gender": "male",
+                    "id": 1,
+                    "last_name": "Punch"
+                },
+                "guardian": {
+                    "authorized_to_pickup": true,
+                    "id": 1,
+                    "medical_info_consent": true,
+                    "occupation": "Delivery Driver",
+                    "user": {
+                        "date_of_birth": "1974-09-23",
+                        "email": "spam@spam.com",
+                        "first_name": "John",
+                        "gender": "male",
+                        "id": 1,
+                        "last_name": "Davies",
+                        "phone_number": "98885656",
+                        "role": {
+                            "id": 1,
+                            "role_desc": "The parent or legal guardian of the child",
+                            "role_name": "guardian"
+                        }
+                    }
+                },
+                "id": 1,
+                "relationship": {
+                    "id": 1,
+                    "relationship_desc": "Parent of the child",
+                    "relationship_name": "Father"
+                }
+            },
+            ...
+            ...
+            ...
+        ]
+
+# /guardians_children/<int: guardians_children_id>
+
+* Description: Retieve a single guardian child entity.
+
+* Method: GET
+
+* Authentication: jwt_required()
+
+* Request Body: None
+
+* Request URI
+
+        http://localhost:5000/guardians_children/1
+
+* Response Body
+
         {
             "child": {
                 "date_of_birth": "2020-07-11",
@@ -920,63 +977,7 @@ Response Body
                 "relationship_desc": "Parent of the child",
                 "relationship_name": "Father"
             }
-        },
-        ...
-        ...
-        ...
-    ]
-
-# /guardians_children/<int: guardians_children_id>
-
-* Description: Retieve a single guardian child entity.
-
-* Method: GET
-
-* Authentication: jwt_required()
-
-* Request Body: None
-
-* Request URI
-
-    http://localhost:5000/guardians_children/1
-
-* Response Body
-
-    {
-        "child": {
-            "date_of_birth": "2020-07-11",
-            "first_name": "Anthony",
-            "gender": "male",
-            "id": 1,
-            "last_name": "Punch"
-        },
-        "guardian": {
-            "authorized_to_pickup": true,
-            "id": 1,
-            "medical_info_consent": true,
-            "occupation": "Delivery Driver",
-            "user": {
-                "date_of_birth": "1974-09-23",
-                "email": "spam@spam.com",
-                "first_name": "John",
-                "gender": "male",
-                "id": 1,
-                "last_name": "Davies",
-                "phone_number": "98885656",
-                "role": {
-                    "id": 1,
-                    "role_desc": "The parent or legal guardian of the child",
-                    "role_name": "guardian"
-                }
-            }
-        },
-        "id": 1,
-        "relationship": {
-            "id": 1,
-            "relationship_desc": "Parent of the child",
-            "relationship_name": "Father"
         }
-    }
 
 # /guardians_children
 
@@ -988,49 +989,49 @@ Response Body
 
 * Request Body
 
-    {
-        "guardian_id": 1,
-        "child_id": 3, 
-        "relationship_id": 1
-    }
+        {
+            "guardian_id": 1,
+            "child_id": 3, 
+            "relationship_id": 1
+        }
 
 * Response Body
 
-    {
-        "child": {
-            "date_of_birth": "2019-10-16",
-            "first_name": "Maisie",
-            "gender": "female",
-            "id": 3,
-            "last_name": "Jones"
-        },
-        "guardian": {
-            "authorized_to_pickup": true,
-            "id": 1,
-            "medical_info_consent": true,
-            "occupation": "Delivery Driver",
-            "user": {
-                "date_of_birth": "1974-09-23",
-                "email": "spam@spam.com",
-                "first_name": "John",
-                "gender": "male",
+        {
+            "child": {
+                "date_of_birth": "2019-10-16",
+                "first_name": "Maisie",
+                "gender": "female",
+                "id": 3,
+                "last_name": "Jones"
+            },
+            "guardian": {
+                "authorized_to_pickup": true,
                 "id": 1,
-                "last_name": "Davies",
-                "phone_number": "98885656",
-                "role": {
+                "medical_info_consent": true,
+                "occupation": "Delivery Driver",
+                "user": {
+                    "date_of_birth": "1974-09-23",
+                    "email": "spam@spam.com",
+                    "first_name": "John",
+                    "gender": "male",
                     "id": 1,
-                    "role_desc": "The parent or legal guardian of the child",
-                    "role_name": "guardian"
+                    "last_name": "Davies",
+                    "phone_number": "98885656",
+                    "role": {
+                        "id": 1,
+                        "role_desc": "The parent or legal guardian of the child",
+                        "role_name": "guardian"
+                    }
                 }
+            },
+            "id": 5,
+            "relationship": {
+                "id": 1,
+                "relationship_desc": "Parent of the child",
+                "relationship_name": "Father"
             }
-        },
-        "id": 5,
-        "relationship": {
-            "id": 1,
-            "relationship_desc": "Parent of the child",
-            "relationship_name": "Father"
         }
-    }
 
 # /guardians_children/<int: guardians_children_id>
 
@@ -1042,7 +1043,7 @@ Response Body
 
 * Request Body
 
-Request Body
+* Request Body
 
     {
         "guardian_id": 1,
@@ -1050,7 +1051,7 @@ Request Body
         "relationship_id": 2
     }
 
-Response Body
+* Response Body
 
     {
         "child": {
@@ -1100,17 +1101,17 @@ Response Body
 
 * Request URI
 
-http://localhost:5000/guardians_children/5
+        http://localhost:5000/guardians_children/5
 
 * Response Body
 
-    {
-        "message": "The records for guardian-child relationship #5 have been deleted."
-    }
+        {
+            "message": "The records for guardian-child relationship #5 have been deleted."
+        }
 
 # R6. An ERD for your app
 
-![Enrollment](docs/Enrollment%20and%20Registration.drawio.png)
+![ERD](docs/Enrollment%20and%20Registration.drawio.png)
 
 
 # R7. Detail any third party services that your app will use
