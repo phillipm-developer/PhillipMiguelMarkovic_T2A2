@@ -828,17 +828,8 @@ Response Body
 
 # R6. An ERD for your app
 
-## Enrollment and Registration:
 
 ![Enrollment](docs/Enrollment%20and%20Registration.drawio.png)
-
-## Attendance Tracking (Medical information and emergency contacts includeed here for convenience):
-
-![Attendence](docs/Attendence%20Tracking.drawio.png)
-
-## Scheduling and Calendar Management:
-
-![Scheduling](docs/Scheduling%20and%20Calendar%20Management.drawio.png)
 
 
 
