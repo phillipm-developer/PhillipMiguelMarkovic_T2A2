@@ -1,11 +1,8 @@
-from flask import Blueprint, request, abort
-from datetime import timedelta
+from flask import Blueprint, request
 from models.user import User, UserSchema
-from models.user import User, UserSchema
-from init import db, bcrypt
+from init import db
 from sqlalchemy.exc import IntegrityError
 from flask_jwt_extended import jwt_required
-from blueprints.auth_bp import admin_required
 
 user_bp = Blueprint('users', __name__, url_prefix='/users')
 
@@ -13,7 +10,7 @@ user_bp = Blueprint('users', __name__, url_prefix='/users')
 @user_bp.route('/', methods=['GET'])
 @jwt_required()
 def all_users():
-    # select * from users;
+    # select * from users; - returns all users
     stmt = db.select(User).order_by(User.id.asc())
     users = db.session.scalars(stmt).all()
     return UserSchema(many=True, exclude=['password', 'role_id']).dump(users)
@@ -22,9 +19,11 @@ def all_users():
 @user_bp.route('/<int:user_id>', methods=['GET'])
 @jwt_required()
 def one_user(user_id):
+    # select * from users where id = user_id; - Retrieves an individual user
     stmt = db.select(User).filter_by(id=user_id)
     user = db.session.scalar(stmt)
 
+    # If user exists
     if user:
         return UserSchema(many=False, exclude=['password', 'role_id']).dump(user)
     else:
@@ -38,7 +37,6 @@ def create_user():
         # Parse, sanitize and validate the incoming JSON data 
         # via the schema
         user_info = UserSchema().load(request.json)
-        print(user_info)
 
         # Create a new User model instance with the schema data
         user = User(
@@ -52,7 +50,7 @@ def create_user():
             role_id = user_info['role_id']
         )
 
-        # Add and commit the new user
+        # Add and commit the new user - insert into user values (...)
         db.session.add(user)
         db.session.commit()
 
@@ -63,7 +61,7 @@ def create_user():
         return {'error': 'Email address already in use'}, 409
 
 
-# Update a user
+# Update an individual user specifed by the restful parameter user_id
 @user_bp.route('/<int:user_id>', methods=['PUT', 'PATCH'])
 @jwt_required()
 def update_user(user_id):
@@ -71,9 +69,9 @@ def update_user(user_id):
     user = db.session.scalar(stmt)
     user_info = UserSchema().load(request.json)
 
-    print(user_info)
-
+    # Assign the values to the model attributes is user exists
     if user:
+        # update users set first_name = '...', last_name = '...', etc
         user.first_name = user_info.get('first_name', user.first_name)
         user.last_name = user_info.get('last_name', user.last_name)
         user.email = user_info.get('email', user.email)
@@ -92,11 +90,11 @@ def update_user(user_id):
 @user_bp.route('/<int:user_id>', methods=['DELETE'])
 @jwt_required()
 def delete_user(user_id):
+    # delete from table users where id = user_id
     stmt = db.select(User).filter_by(id=user_id)
     user = db.session.scalar(stmt)
 
     if user:
-        # admin_or_owner_required(user.user.id)
         db.session.delete(user)
         db.session.commit()
         return {"message": f"The records for user #{user.id} - {user.first_name} {user.last_name} have been deleted."}, 200

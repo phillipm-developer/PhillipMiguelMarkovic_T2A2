@@ -1,11 +1,9 @@
 from flask import Blueprint, request, abort
-from datetime import timedelta
-from models.user import User, UserSchema
+from models.user import User
 from models.guardian import Guardian, GuardianSchema
 from init import db, bcrypt
 from sqlalchemy.exc import IntegrityError
 from flask_jwt_extended import jwt_required
-from blueprints.auth_bp import admin_required
 
 guardian_bp = Blueprint('guardians', __name__, url_prefix='/guardians')
 
@@ -22,6 +20,7 @@ def all_guardians():
 @guardian_bp.route('/<int:guardian_id>', methods=['GET'])
 @jwt_required()
 def one_guardian(guardian_id):
+    # select * from guardians where id=guardian_id
     stmt = db.select(Guardian).filter_by(id=guardian_id)
     guardian = db.session.scalar(stmt)
 
@@ -40,6 +39,7 @@ def create_guardian():
         user_info = GuardianSchema().load(request.json)
 
         # Create a new User model instance with the schema data
+        # insert into users (first_name, ...) values (..., ...)
         user = User(
             first_name = user_info['user']['first_name'],
             last_name = user_info['user']['last_name'],    
@@ -55,6 +55,7 @@ def create_guardian():
         db.session.add(user)
         db.session.commit()
 
+        # insert into guardians (occupation, medical_info_consent, ...) values (..., ...)
         guardian = Guardian(
             user_id = user.id,
             occupation = user_info['occupation'],
@@ -66,7 +67,7 @@ def create_guardian():
         db.session.add(guardian)
         db.session.commit()
 
-        # Return the new user excluding the password
+        # Return the new user excluding the password and role id.
         return GuardianSchema(exclude=['user.password', 'user.role_id']).dump(guardian), 201
     
     except IntegrityError:
@@ -77,14 +78,12 @@ def create_guardian():
 @guardian_bp.route('/<int:guardian_id>', methods=['PUT', 'PATCH'])
 @jwt_required()
 def update_guardian(guardian_id):
+    # update guardian set occupation = '...', ... where id = guardian_id
     stmt = db.select(Guardian).filter_by(id=guardian_id)
     guardian = db.session.scalar(stmt)
     guardian_info = GuardianSchema().load(request.json)
 
-    print(guardian_info)
-
     if guardian:
-        # admin_or_owner_required(card.user.id)
         guardian.occupation = guardian_info.get('occupation', guardian.occupation)
         guardian.medical_info_consent = guardian_info.get('medical_info_consent', guardian.medical_info_consent)
         guardian.authorized_to_pickup = guardian_info.get('authorized_to_pickup', guardian.authorized_to_pickup)
@@ -97,6 +96,7 @@ def update_guardian(guardian_id):
 @guardian_bp.route('/<int:guardian_id>', methods=['DELETE'])
 @jwt_required()
 def delete_guardian(guardian_id):
+    # delete from guardians where id=guardian_id
     stmt = db.select(Guardian).filter_by(id=guardian_id)
     guardian = db.session.scalar(stmt)
 

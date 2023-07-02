@@ -13,12 +13,14 @@ from init import db, bcrypt
 
 cli_bp = Blueprint('db', __name__)
 
+# Drop all tables and recreate them
 @cli_bp.cli.command('create')
 def create_db():
     db.drop_all()
     db.create_all()
     print('Tables created successfully')
 
+# Populate the database tables
 @cli_bp.cli.command('seed')
 def seed_db():
 

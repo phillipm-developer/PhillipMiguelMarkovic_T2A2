@@ -2,15 +2,16 @@ from flask import Blueprint, request, abort
 from datetime import timedelta
 from models.user import User, UserSchema
 from init import db, bcrypt
-from sqlalchemy.exc import IntegrityError
 from flask_jwt_extended import create_access_token, get_jwt_identity
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
+# The purpose of this route is to provide legitimate users a jwt web token so they 
+# can continue on with the session.
 @auth_bp.route('/login', methods=['POST'])
 def login():
     try:
-        # stmt = db.select(User).where(User.email==request.json['email'])
+        # select * from user where email=request.json['email']
         stmt = db.select(User).filter_by(email=request.json['email'])
         user = db.session.scalar(stmt)
         if user and bcrypt.check_password_hash(user.password, request.json['password']):

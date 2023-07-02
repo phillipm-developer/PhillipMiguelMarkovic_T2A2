@@ -2,10 +2,9 @@ from flask import Blueprint, request, abort
 from datetime import timedelta
 from models.user import User, UserSchema
 from models.child import Child, ChildSchema
-from init import db, bcrypt
+from init import db
 from sqlalchemy.exc import IntegrityError
 from flask_jwt_extended import jwt_required
-from blueprints.auth_bp import admin_required
 from models.medical_information import MedicalInformation, MedicalInformationSchema
 from models.emergency_contact import EmergencyContact, EmergencyContactSchema
 
@@ -24,6 +23,7 @@ def all_children():
 @child_bp.route('/<int:child_id>', methods=['GET'])
 @jwt_required()
 def one_child(child_id):
+    # select * from children where id=child_id
     stmt = db.select(Child).filter_by(id=child_id)
     child = db.session.scalar(stmt)
 
@@ -36,6 +36,8 @@ def one_child(child_id):
 @child_bp.route('/<int:child_id>/medical_info', methods=['GET'])
 @jwt_required()
 def one_child_with_medical_info(child_id):
+    # select * from children, medical_information where id=child_id and 
+    # children.medical_information_id=medical_information.id
     stmt = db.select(Child).filter_by(id=child_id)
     child = db.session.scalar(stmt)
 
@@ -48,6 +50,8 @@ def one_child_with_medical_info(child_id):
 @child_bp.route('/<int:child_id>/emergency_contact', methods=['GET'])
 @jwt_required()
 def one_child_with_emergency_contact(child_id):
+    # select * from children, emergency_contacts where id=child_id and 
+    # children.emergency_contact_id=emergency_contacts.id
     stmt = db.select(Child).filter_by(id=child_id)
     child = db.session.scalar(stmt)
 
@@ -65,10 +69,9 @@ def create_child():
         # Parse, sanitize and validate the incoming JSON data 
         # via the schema
         child_info = ChildSchema().load(request.json)
-        print(child_info)
 
         # For every child that is created a corresponding default medical inforation entry is made with 
-        # no inforamtion recorded
+        # no inforamtion recorded. - insert into medical_information (dietary_restrictions, ...) values (..., ...)
         medical_info = MedicalInformation(
             dietary_restrictions ="",
             allergies ="",
@@ -82,7 +85,7 @@ def create_child():
         db.session.commit()
 
         # For every child thats created a corresponding default emergency contact is created. This subsequestly updated 
-        # by an admin or guardian.
+        # by an admin or guardian. - insert into emergency_contacts (first_name, ...) values (..., ...)
         emergency_contact = EmergencyContact(
             first_name = "",
             last_name = "",
@@ -119,11 +122,10 @@ def create_child():
 @child_bp.route('/<int:child_id>', methods=['PUT', 'PATCH'])
 @jwt_required()
 def update_child(child_id):
+    # update child set first_name="...", last_name="..." where id=child_id
     stmt = db.select(Child).filter_by(id=child_id)
     child = db.session.scalar(stmt)
     child_info = ChildSchema().load(request.json)
-
-    print(child_info)
 
     if child:
         child.first_name = child_info.get('first_name', child.first_name)
@@ -141,8 +143,6 @@ def update_child_medical_record(child_id):
     stmt = db.select(Child).filter_by(id=child_id)
     child = db.session.scalar(stmt)
     medical_info = MedicalInformationSchema().load(request.json)
-
-    print(medical_info)
 
     if child:
         child.medical_info.dietary_restrictions = medical_info.get('dietary_restrictions', child.medical_info.dietary_restrictions)
@@ -180,11 +180,11 @@ def update_child_emergency_contact(child_id):
 @child_bp.route('/<int:child_id>', methods=['DELETE'])
 @jwt_required()
 def delete_child(child_id):
+    # delete from child where id=child_id
     stmt = db.select(Child).filter_by(id=child_id)
     child = db.session.scalar(stmt)
 
     if child:
-        # admin_or_owner_required(child.user.id)
         db.session.delete(child)
         db.session.delete(child.medical_info)  # Delete corresponding medical information record
         db.session.delete(child.emergency_contact)  # Delete corresponding emergency contact record

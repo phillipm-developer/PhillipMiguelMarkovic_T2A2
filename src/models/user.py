@@ -3,6 +3,7 @@ from marshmallow import fields, validates_schema
 from marshmallow.exceptions import ValidationError
 from marshmallow.validate import Length, OneOf, And, Regexp, Range, Email
 
+# Model for the users table
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -15,14 +16,19 @@ class User(db.Model):
     date_of_birth = db.Column(db.Date())
     gender = db.Column(db.String)
 
+    # Foreign key constraint on roles table
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+
+    # Relationship with Role model
     role = db.relationship('Role', back_populates='user')
 
+    # Relationship with Guardian model
     guardian = db.relationship('Guardian', back_populates='user', cascade='all, delete')
 
 class UserSchema(ma.Schema):
     role = fields.Nested('RoleSchema')
 
+    # Validations
     first_name = fields.String(required=True, validate=And(
         Length(min=2, max= 50, error='First name must be 2 to 50 characters long'),
         Regexp('^[a-zA-Z ]+$', error='Only letters and spaces are permitted in a first name.')
@@ -33,7 +39,7 @@ class UserSchema(ma.Schema):
         Regexp('^[a-zA-Z ]+$', error='Only letters and spaces are permitted in a last name.')
     ))
 
-    # Use the email validator provided by marshmallow.validate
+    # Using the email validator provided by marshmallow.validate
     email = fields.String(required=True, validate=Email(error="Please provide a valid email address"))
 
     password = fields.String(required=True, validate=Length(min=10, max=100, error="Your password must be at least 10 characters long"))
@@ -42,6 +48,7 @@ class UserSchema(ma.Schema):
 
     date_of_birth = fields.Date()
 
+    # Checks whether string submitted is a valid gender
     @validates_schema()
     def validate_status(self, data, **kwargs):
         gender = [x for x in VALID_GENDERS if x.upper() == data['gender'].upper()]

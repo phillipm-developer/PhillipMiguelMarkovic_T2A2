@@ -1,7 +1,8 @@
 from init import db, ma
 from marshmallow import fields
-from marshmallow.validate import Length, And, Regexp
 
+# ORM Model for medical_information table. MedicalInformation model 
+# can be viewed as a scratch pad.
 class MedicalInformation(db.Model):
     __tablename__ = 'medical_information'
 
@@ -12,10 +13,12 @@ class MedicalInformation(db.Model):
     special_needs = db.Column(db.Text())
     notes = db.Column(db.Text())
 
+    # Relationship formed with the Child model
     child = db.relationship('Child', back_populates='medical_info')
 
 class MedicalInformationSchema(ma.Schema):
 
+    # Validations just ensure that the fields accept text
     dietary_restrictions = fields.String(required=False)
 
     allergies = fields.String(required=False)

@@ -12,9 +12,11 @@ from marshmallow.exceptions import ValidationError
 def setup():
     app = Flask(__name__)
 
+    # Draw configuration info from environment variables
     app.config['JWT_SECRET_KEY'] = environ.get('JWT_KEY')
     app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DB_URI')
 
+    # Flask application registrations
     db.init_app(app)
     ma.init_app(app)
     bcrypt.init_app(app)
@@ -28,7 +30,7 @@ def setup():
     def validation_error(err):
         return {'error': err.__dict__['messages']}, 400
 
-
+    # Register all the Blueprint containers
     app.register_blueprint(cli_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(guardian_bp)

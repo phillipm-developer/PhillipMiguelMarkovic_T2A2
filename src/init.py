@@ -8,4 +8,5 @@ ma = Marshmallow()
 bcrypt = Bcrypt()
 jwt = JWTManager()
 
+# Put this here so other models can access it - DRY
 VALID_GENDERS = ['Male', 'Female', 'Non-binary']

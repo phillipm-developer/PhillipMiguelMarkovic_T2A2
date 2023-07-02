@@ -4,6 +4,7 @@ from marshmallow.exceptions import ValidationError
 from marshmallow.validate import Length, And, Regexp
 from datetime import date
 
+# ORM model for the table 'children'
 class Child(db.Model):
     __tablename__ = 'children'
 
@@ -14,11 +15,16 @@ class Child(db.Model):
     gender = db.Column(db.String)
 
     medical_info_id = db.Column(db.Integer, db.ForeignKey('medical_information.id'))
+
+    # Relationship with the MedicalInformation model
     medical_info =  db.relationship('MedicalInformation', back_populates='child')
 
     emergency_contact_id = db.Column(db.Integer, db.ForeignKey('emergency_contacts.id'))
+
+    # Relationship with the EmergencyContact model
     emergency_contact =  db.relationship('EmergencyContact', back_populates='child')
 
+    # Relationship with the GuardianChild model
     guardian_child = db.relationship('GuardianChild', back_populates='child', cascade='all, delete')
 
 class ChildSchema(ma.Schema):
@@ -40,6 +46,7 @@ class ChildSchema(ma.Schema):
 
     gender = fields.String(load_default=VALID_GENDERS[0])
 
+    # Validates for the correct gender
     @validates_schema()
     def validate_status(self, data, **kwargs):
         gender = [x for x in VALID_GENDERS if x.upper() == data['gender'].upper()]
@@ -48,7 +55,7 @@ class ChildSchema(ma.Schema):
 
         data['gender'] = gender[0]
 
-    
+    # This custom validator prevents children over the age of 6 from enrolling
     @validates('date_of_birth') 
     def validate_enrollment_date(self, dob):
         today = date.today()
