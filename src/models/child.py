@@ -66,6 +66,5 @@ class ChildSchema(ma.Schema):
             raise ValidationError("Child  must be 0-6 years of age.")
 
     class Meta:
-        # fields = ('id', 'first_name', 'last_name', 'date_of_birth', 'gender', 'medical_info_id', 'emergency_contact_id', 'guardian_child')
         fields = ('id', 'first_name', 'last_name', 'date_of_birth', 'gender', 'medical_info_id', 'medical_info', 'emergency_contact_id', 'emergency_contact')
         ordered=True

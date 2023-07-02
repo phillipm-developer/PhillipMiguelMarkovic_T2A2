@@ -864,6 +864,145 @@ By utilizing these third-party services, the childcare management system Flask W
 
 # R8. Describe your projects models in terms of the relationships they have with each other
 
+The following is an overview of the SQLAlchemy models and the relationships they have with each other. Each SQLAlchemy model represents an entity that maps directly to a table in the database. This models each entity (table) as objects in the flask application and simplifies interactions with the database. The  models are related to each other through the use of the db.ForeignKey() method and the db.relationship() method. 
+
+The db.ForeignKey() method sets up foreign keys in a model and extablishes relationships between models based on the values in specific columns. The db.relationship() method defines a higher level relationship between 2 models and allows the data in a model being referenced by the foreign key to be embedded in its place when a query is performed throgh the ORM Child model. This is exemplified in the following json return:
+
+    {
+        "date_of_birth": "2020-07-11",
+        "emergency_contact_id": 2,
+        "first_name": "Anthony",
+        "gender": "male",
+        "id": 1,
+        "last_name": "Punch",
+        "medical_info": {
+            "allergies": "",
+            "dietary_restrictions": "",
+            "id": 1,
+            "medications": "",
+            "notes": "",
+            "special_needs": ""
+        }
+    }
+
+This is the record of a child. Note that the medical information for this child is included (embedded) in the json dictionary instead of a medical_info_id. This is because a db.relationship was established between both models.
+
+This is accomplished with the following statement defined in the Child model:
+
+    emergency_contact =  db.relationship('EmergencyContact', back_populates='child')
+
+And then specifying the following statement in the ChildSchema class which enables nesting of values in a JSON return.
+
+class ChildSchema(ma.Schema):
+    ...
+    medical_info = fields.Nested('MedicalInformationSchema')
+    ...
+
+    class Meta:
+        fields = ('id', 'first_name', 'last_name', 'date_of_birth', 'gender', 'medical_info_id', 'medical_info', 'emergency_contact_id', 'emergency_contact')
+        ordered=True
+
+## Child Model
+
+The Child model contains the information relating to the child entity like first_name, last_name, date_of_birth and gender. Each Child model is related to 2 other models (MedicalInformation and EmergencyContact). These models are related to the Child model through the following foreign key constraints declared in the Child model.
+
+    medical_info_id = db.Column(db.Integer, db.ForeignKey('medical_information.id'))
+    emergency_contact =  db.relationship('EmergencyContact', back_populates='child')
+
+
+Relationships are established between the Child model and the models MedicalInformation and EmergencyContact with the following declarations.
+
+    medical_info =  db.relationship('MedicalInformation', back_populates='child')
+    emergency_contact =  db.relationship('EmergencyContact', back_populates='child')
+
+Note that in both cases the 'back_populates' argument is the name of the variable declared in each of the other models (MedicalInformation and EmergencyContact), and this completes the relationship from the other end(s).
+
+The Child model also has a relationship with the GuardianChild model. This is captured in the following manner.
+
+    guardian_child = db.relationship('GuardianChild', back_populates='child', cascade='all, delete')
+
+
+## Guardian Model
+
+The Guardian model contains the information relating to the Guardian entity like first_name, last_name, occupation, etc. The Guardian model has a many-to-many relationship with 'Child' as a 'Child' can have more than one parent, and a parent can have more than one 'Child'. 
+
+A  many-to-many relationship requires the creation of a join Model, GuardianChild in this instance. There is no foreign key constraint on GuardianChild, as tyhe Guardian exists as a foreign key in GuardianChild.
+
+A relationship is established between the Guardian model and the GuardianChild model by declaring the following relationship.
+
+    guardian_child = db.relationship('GuardianChild', back_populates='guardian', cascade='all, delete')
+
+The 'back_populates' argument here refers to the variable guardian defined in GuardianChild.
+
+The following line defined in GuardianSchema denotes the one-to-many relationship between the Guardian and GuardianChild models.
+
+    guardian_child = fields.List(fields.Nested('GuardianChildSchema'))
+
+The Guardian model is associated with a single unique User model, which contains the information common to all user types. A foreign key is required here.
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+A relationship between the Guardian and User models is also established.
+
+    user = db.relationship('User', back_populates='guardian')
+
+## GuardianChild Model
+
+This model represents the join between the Child and Guardian model. This is established by declaring 2 foreign key constraints for each instance of the model.
+
+    guardian_id = db.Column(db.Integer, db.ForeignKey('guardians.id'), nullable=False)
+    child_id = db.Column(db.Integer, db.ForeignKey('children.id'), nullable=False)
+
+Relationships between this model and the Child and Gurdian models are formed by declaring the following statements in GuadianChild.
+
+    guardian = db.relationship('Guardian', back_populates='guardian_child')
+    child = db.relationship('Child', back_populates='guardian_child')
+
+Where 'guardian_child' is a variable declared in each Child and Guardian model instance.
+
+The other foreign keys constraint declared in GuardianChild is relationship_id.
+
+    relationship_id = db.Column(db.Integer, db.ForeignKey('relationships.id'))
+
+GuardianChild references Relationship in order to characterise the association between Child and Guardian model instances. A relationship is established with the Relationship model.
+
+    relationship = db.relationship('Relationship', back_populates='guardian_child')
+
+## Relationship Model
+
+The Relationship model has no foreign keys. It merely contains relationship types (e.g. Mother, Father, Sister, etc). However a relationship is declared to associate it back to the relationship variable in GuardianChild.
+
+    guardian_child = db.relationship('GuardianChild', back_populates='relationship')
+
+## User Model
+
+The User model has one foreign key. It only contains role types (e.g. Mother, Father, Sister, etc). A relationship is declared to associate it back to the role variable in GuardianChild.
+
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+
+A relationship is declared to associate it back to the user variable in the model 'Role'.
+
+    role = db.relationship('Role', back_populates='user')
+
+## Role Model
+
+The 'Role' model has no foreign keys. It merely contains role types (e.g. guardian, carer, childcare admin, etc). However a relationship is declared to associate it back to the role variable in User.
+
+    user = db.relationship('User', back_populates='role')
+
+## MedicalInformation Model
+
+The 'MedicalInformation' model has no foreign keys. It maintains notes on allergies, medications, etc. However a relationship is declared to associate it back to the medical_info variable in Child.
+
+    child = db.relationship('Child', back_populates='medical_info')
+
+## EmergencyContact Model
+
+The 'EmergencyContact' model has no foreign keys. It contains the contact details of the person to call in case of emergencies. However a relationship is declared to associate it back to the emergency_contact variable in Child.
+
+    child = db.relationship('Child', back_populates='emergency_contact')
+
+
 # R9. Discuss the database relations to be implemented in your application
 
 This web api project represents a small subset of the functionality of a childcare management system. It aims to provide backend support for enrollment and registration. The following tables capture the informational requirements for this function:
@@ -877,9 +1016,7 @@ This web api project represents a small subset of the functionality of a childca
 * Medical_Information
 * Emergency_Contacts
 
-Based on the description provided, the childcare management system would require the following database relations:
-
-Tobe able to effectively access, traverse and maintain the integrity of this datbase the following database elations are required.
+To be able to effectively access, traverse and maintain the integrity of this datbase the following database relations are required.
 
 ### One-to-Many Relationship: Children to Guardians
 

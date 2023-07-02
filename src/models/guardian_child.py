@@ -17,11 +17,11 @@ class GuardianChild(db.Model):
 
 
 class GuardianChildSchema(ma.Schema):
-    # guardian = fields.Nested('GuardianSchema', only=['id', 'occupation', 'medical_info_consent', 'authorized_to_pickup'])
     guardian = fields.Nested('GuardianSchema', exclude=['user.password'])
     child = fields.Nested('ChildSchema', only=['id', 'first_name', 'last_name', 'date_of_birth', 'gender'])
     relationship = fields.Nested('RelationshipSchema')
 
+    # Validations
     guardian_id = fields.Integer(required=True)
     child_id = fields.Integer(required=True)
 
