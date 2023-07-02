@@ -24,29 +24,47 @@ In addressing these problems through automation and digitization, the childcare 
 
 # R3. Why have you chosen this database system. What are the drawbacks
 
-By choosing PostgreSQL as the relational database management system my childcare management system, I  have considered its strengths and weaknesses in comparison to other database systems. The following outlines my reasons for choosing PostgreSQL and an overview of its pros and cons:
+I chose a relational database to contain the data for managing a childcare center. Such a system needs to record and maintain information on parents/guardians, carers and childcare admins. These are all particulars, for example, the first name, last name and date of birth of a child. This is an example of structured data which can be organised into tables. Therefore it makes the most sense to adopt the relational model for maintaining data.
+
+I have chosen PostgreSQL as the relational database management system for my childcare management system. I  have considered its strengths and weaknesses in comparison to other database systems. The following outlines my reasons for choosing PostgreSQL and an overview of its pros and cons:
 
 ## Rationale for using PostgreSQL (Pros):
 
-* Reliability and Stability: PostgreSQL is known for its reliability and stability, offering robust data integrity and ACID compliance. It ensures the consistency and durability of data, which is crucial for a childcare management system handling sensitive information.
+* PostgreSQL is known for its reliability and stability, offering robust data integrity and ACID compliance. It ensures the consistency and durability of data, which is crucial for a childcare management system handling sensitive information. A childcare management system involves maintaining complex relationships between entities such as children, parents/guardians, emergency contacts, and medical information. PostgreSQL's support for enforcing referential integrity, constraints, and transactions ensures data consistency and reliability.
 
-* Advanced Features: PostgreSQL provides a wide range of advanced features, including support for complex queries, full-text search, spatial data, and JSON data types. These features can be beneficial when working with complex data structures or implementing specific functionalities in your system.
+* Relational databases like PostgreSQL excel at handling structured data, which is prevalent in childcare management systems. With predefined schemas and the ability to query and join data efficiently, PostgreSQL enables you to organize and retrieve information effectively.
 
-* Extensibility and Flexibility: PostgreSQL allows the creation of custom data types, functions, and extensions, offering flexibility in data modeling and application development. It supports multiple programming languages, making it suitable for integration with your Flask web API.
+* A childcare management system may need to handle a significant amount of data and concurrent user access. PostgreSQL's performance optimizations, indexing capabilities, and scalability features allow the system to handle such requirements reliably.
 
-* Community Support: PostgreSQL has a large and active open-source community, providing continuous development, bug fixes, and security updates. The community-driven nature ensures a reliable and well-supported database system.
+* PostgreSQL is an open-source database, meaning it is free to use and has a lower total cost of ownership compared to proprietary database systems. This can be advantageous for a childcare management system, particularly for smaller organizations or projects with budget constraint
+
+* PostgreSQL provides a wide range of advanced features, including support for complex queries, full-text search, spatial data, and JSON data types. These features can be beneficial when working with complex data structures or implementing specific functionalities in your system.
+
+* PostgreSQL allows the creation of custom data types, functions, and extensions, offering flexibility in data modeling and application development. It provides ample support for python through libraries such as SQLAlchemy and , making it suitable for integration with your Flask web API.
 
 ## Drawbacks of PostgreSQL (Cons):
 
-* Learning Curve: Compared to some other database systems, PostgreSQL may have a steeper learning curve, especially for developers new to relational databases. Familiarizing yourself with its advanced features and SQL syntax might require additional effort.
+* Compared to some other database systems, PostgreSQL may have a steeper learning curve, especially for developers new to relational databases. As a developer I need to familiarise myself with its advanced features and SQL syntax might require additional time and effort. It would need to be factored into any project planning.
 
-* Memory Usage: PostgreSQL tends to utilize more memory compared to other database systems, particularly when handling large datasets or complex queries. Proper tuning and configuration may be required to optimize memory usage.
+* PostgreSQL tends to utilize more memory compared to other database systems, particularly when handling large datasets or complex queries. Proper tuning, configuration and load testing may be required to reduce memory usage.
 
-* Scale-Out Limitations: While PostgreSQL can handle sizable workloads, it may face challenges when scaling out horizontally across multiple servers compared to some distributed database systems. Scaling read-heavy workloads can require additional considerations.
+* While PostgreSQL can handle sizable workloads, it may face challenges when scaling out horizontally across multiple servers compared to some distributed database systems. Over time the childcare management system become centralised across a number of different childcare centers. Scaling across mutiple servers may become a factor then.
 
-* Complexity for Simple Applications: If your childcare management system has relatively simple data requirements and doesn't require advanced features, PostgreSQL's feature-rich nature might introduce unnecessary complexity.
+If my childcare management system has relatively simple data requirements and doesn't require advanced features, PostgreSQL's feature-rich nature might introduce unnecessary complexity.
 
-PostgreSQL is a popular choice for relational database management due to its reliability, advanced features, extensibility, and strong community support. However, it requires a learning curve, consumes more memory, and might be overkill for simple applications. Evaluating your specific requirements, data complexity, and scalability needs can help determine if PostgreSQL is the right fit for your childcare management system.
+## Sources
+
+Dhruv S. 2019, AAlpha Information Systems, ‘PostgreSQL Advantages and Disadvantages’, 
+accessed 6 June 2023, https://www.aalpha.net/blog/pros-and-cons-of-using-postgresql-for-application-development/
+
+Layne J. Ablison, ‘Pros And Cons Of Postgresql’, accessed 6 June 2023, 
+https://www.ablison.com/pros-and-cons-of-postgresql/
+
+Code Topology, ‘Learning PostgreSQL | What is PostgreSQL, Advantages, Disadvantages’, 
+accessed June 6 2023, https://codetopology.com/database/what-is-postgresql/
+
+Geeks for Geeks, ‘ACID Properties in DBMS’, accessed June 6 2023, 
+https://www.geeksforgeeks.org/acid-properties-in-dbms/
 
 # R4. Identify and discuss the key functionalities and benefits of an ORM
 
