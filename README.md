@@ -714,7 +714,7 @@ Response Body
         "medical_info_id": null
     }
 
-# /children/<child_id>
+# /children/<int: child_id>
 
 * Description: Delete a single child.
 
@@ -731,7 +731,7 @@ Response Body
     }
 
 
-# /children/<child_id>/medical_info
+# /children/<int: child_id>/medical_info
 
 * Description: Retrieve a single child medical information.
 
@@ -764,7 +764,7 @@ Response Body
         }
     }
 
-# /children/<child_id>/medical_info
+# /children/<int: child_id>/medical_info
 
 * Description: Update a single childs medical information.
 
@@ -801,7 +801,7 @@ Response Body
         }
     }
 
-# /children/<child_id>/emergency_contact
+# /children/<int: child_id>/emergency_contact
 
 * Description: Retieve a single childs emergency contact information.
 
@@ -832,7 +832,7 @@ Response Body
         "medical_info_id": 2
     }
 
-# /children/<child_id>/emergency_contact
+# /children/<int: child_id>/emergency_contact
 
 * Description: Update a single childs emergency contact information.
 
