@@ -1,3 +1,62 @@
+
+# PhillipMiguelMarkovic_T2A2: Childcare Centre Management System Web API
+
+# Link to Source Code Repository
+
+https://github.com/phillipm-developer/PhillipMiguelMarkovic_T2A2
+
+# Link to Trello Workspace
+
+https://trello.com/b/huwqKNdZ/childcare-center-web-api
+
+# Note About Setup
+
+Please follow the instructions below to deploy this application.
+
+Move to a direcotry of your chosing and unzip PhillipMiguelMarkovic_T2A2.zip into the cuurent directory.
+
+Change directory to /PhillipMiguelMarkovic_T2A2/src
+
+Rename the file '.env.sample' to '.env'.
+
+Open the file '.env' and ensure the values are set correctly to the following:
+
+    DB_URI="postgresql+psycopg2://db_dev:mychildcare123@localhost:5432/childcare_db"
+    JWT_KEY="On Pain of Death"
+
+Create a new database
+
+Type psql in the terminal
+
+While in the psql shell type the following commands to create the 'childcare_db' database and a user with all the privileges.
+
+    create database childcare_db;
+
+    \c childcare_db
+
+    create user db_dev with password 'mychildcare123';
+
+    grant all privileges on database childcare_db to db_dev;
+
+
+Create and set up the python virtual environment with th efillowing command sequence:
+
+    python3 -m venv .venv (Creates the virtual environment directory)
+
+    source .venv/bin/activate (This activates the virtual environment)
+
+    pip install -r requirements.txt (Installs all the required dependancies)
+
+To create and seed the tables, then run the server type the following while in the directory '/PhillipMiguelMarkovic_T2A2/src'
+
+    flask db create
+
+    flask db seed
+
+    flask run
+
+The Flask web server should be up and running and ready to accept requests. Use Postman to carry out CRUD requests on the endpoints as specified in R5.
+
 # R1. Identification of the problem you are trying to solve by building this particular app.
 
 The childcare management system I am building as a Flask Web API will address the challenges and complexities associated with managing and organizing childcare centers effectively. The app seeks to streamline and automate various administrative tasks, ultimately enhancing the overall efficiency and quality of childcare services provided.
@@ -1127,7 +1186,7 @@ One guardian can only ever be associated with one user as they are the same indi
 
 # R10. Describe the way tasks are allocated and tracked in your project
 
-I have settled on an Agile Kanban style approach to project management. I made the decision to create tasks based on individual coding milestones as well as the requirements for the readme document. Each card will represent a user story with each one containing tasks. Each card may or may not contain a README document requirement as they may coincide with a coding milestone, or they may be carried out independently and therefore be their own card.
+I have settled on an Agile Kanban style approach to project management. I made the decision to create tasks based on individual coding milestones as well as the requirements for the readme document. Each card will represent a user story with each one containing tasks. Each card may or may not contain a README document requirement as they may coincide with a coding milestone, or they may be carried out independently and therefore be their own card. Each card has the user story as its title.
 
 The Trello board is divided into the following columns (a standard approach). All cards created will be initially placed in the Todo list and move into the "In Progress" column based on priority.
 
@@ -1136,50 +1195,81 @@ The Trello board is divided into the following columns (a standard approach). Al
 * Review: Work that is completed and awaiting review. This may be a code review or it may be a requirement that is evaluated against the rubric criteria. If the item under review fails it is flagged and sent back to "In Progress".
 * Completed: Work that is completely finished and had passed the review stage.
 
+I have calculated 6 days to complete the project.
+
 ## User Stories
 
-These user stories cover the main functionality of enrollment and registration, attendance tracking, and scheduling and calendar management in a childcare management system. They can serve as a starting point for designing and implementing the respective features of the RESTful web API for the childcare centre. It is from these stories that the tasks specified in my Trello board are derived. The User stories have been split off into broad categories as per my original web api proposal submitted on Discord. Stories appear beneath the category headings below:
+These user stories cover the main functionality of enrollment and registration in a childcare management system. They can serve as a starting point for designing and implementing the respective features of the RESTful web API for the childcare centre. It is from these stories that the tasks specified in my Trello board are derived.
 
 ### Enrollment and Registration:
 
-1. As a childcare administrator, I want to be able to register a new child by providing their essential information such as name, date of birth, and contact details.
+* As a childcare administrator, I want to be able to register a new child by providing their essential information such as name, date of birth, and contact details.
 
-2. As a childcare administrator, I want to be able to maintain the records of children, parents/guardians, emergency contacts, medical information, and authorized pickups.
+* As a childcare administrator, I want to be able to maintain the records of children, parents/guardians, emergency contacts, medical information, and authorized pickups.
 
-3. As a parent or guardian, I want to be able to update my child's information such as contact details or medical information.
+* As a parent or guardian, I want to be able to update my child's information such as emergency contact details or medical information.
 
-4. As a childcare administrator, I want to be able to delete a child's record if they are no longer enrolled in the childcare center.
+* As a childcare administrator, I want to be able to delete a child's record if they are no longer enrolled in the childcare center.
 
-### Attendance Tracking:
-
-1. As a childcare administrator, I want to be able to record the arrival and departure times of each child for accurate attendance tracking.
-
-2. As a parent or guardian, I want to be able to view the attendance records of my child to keep track of their attendance history.
-
-### Scheduling and Calendar Management:
-
-1. As a childcare administrator, I want to be able to assign tasks to teachers or carers for each day, including activities like story hour, sleep, finger painting, lunch, etc.
-
-2. As a teacher or carer, I want to be able to view my assigned tasks and the daily routines to plan and prepare accordingly.
-
-3. As a childcare administrator, I want to be able to update or modify the assigned tasks and daily routines based on any changes or requirements.
-
-4. As a parent or guardian, I want to be able to access the daily routines and tasks assigned to teachers or carers to stay informed about my child's activities.
+# Trello Board
 
 ![Enrollment](docs/trello-1.png)
 
-
-![Attendence](docs/trello-2.png)
-
-
-![Scheduling](docs/trello-3.png)
+# To-Do List
+![Attendence](docs/trello-21.png)
 
 
-![Enrollment](docs/trello-4.png)
+![Scheduling](docs/trello-22.png)
+
+# Sample Checklists
+
+![Attendence](docs/trello-23.png)
 
 
-![Attendence](docs/trello-5.png)
+![Scheduling](docs/trello-24.png)
 
 
-![Scheduling](docs/trello-6.png)
+![Enrollment](docs/trello-25.png)
+
+# Tracking Progress
+
+Below are a series of screenshots of my Trello board taken at the end of each day which serves as a standup. I allocated 6 days for completion of all tasks.
+
+# Day 1
+
+At the end of this day R1 to R4 were under review.
+R6- the ERD was still in progress.
+
+![Day 1](docs/trello-26.png)
+
+# Day 2
+
+At te end of day 2 R8 and R9 were in progress. R3, R4 and R6 were under review. R1 and R2 were completed successfully.
+
+![Day 2](docs/trello-27.png)
+
+# Day 3
+
+At the end of day the first 2 major tasks were in progress along with R7. R8 and R9 were under review. R3, R4 and R6 were completed successfully.
+
+![Day 3](docs/trello-28.png)
+
+# Day 4
+
+At the end of day 4 task 3 was still in progress. T1, T2 and R7 were under review. R8 and R9 were completed successfully.
+
+![Day 4](docs/trello-29.png)
+
+# Day 5
+
+At the end of day 5 R10 was in progress. Tasks 3 and 4 were under review. Task 1, 2 and R7 were completed successfully.
+
+![Day 5](docs/trello-30.png)
+
+# Day 6
+
+At the end of day 6 tasks 3 and 4 were completed. R10 was still under review. Please note there was an extra day after this so I took the opportunity review R10 and then change its status to complete.
+
+![Day 6](docs/trello-31.png)
+
 
